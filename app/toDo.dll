@@ -1,0 +1,8 @@
+CREATE TABLE Task (
+	taskNumber INTEGER PRIMARY KEY,
+	taskName TEXT NOT NULL
+);
+
+INSERT INTO Task VALUES (1, "Task Name One");
+INSERT INTO Task VALUES (2, "Task Name Two");
+INSERT INTO Task VALUES (3, "Task Name Three");
