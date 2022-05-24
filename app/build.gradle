@@ -30,7 +30,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'BIT707_A1_5001428_ToDoList.App'
+    mainClass = 'BIT707_A3_5001428_ToDoList.App'
 }
 
 tasks.named('test') {
