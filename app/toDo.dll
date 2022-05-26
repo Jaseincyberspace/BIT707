@@ -1,8 +1,74 @@
 CREATE TABLE Task (
 	taskNumber INTEGER PRIMARY KEY,
-	taskName TEXT NOT NULL
+	taskName TEXT NOT NULL,
+    taskDescription TEXT,
+    dueDate TEXT CHECK(dueDate is null or length(dueDate) == 10),
+    status TEXT NOT NULL CHECK(status == "true" or status == "false")
 );
 
-INSERT INTO Task VALUES (1, "Task Name One");
-INSERT INTO Task VALUES (2, "Task Name Two");
-INSERT INTO Task VALUES (3, "Task Name Three");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 1", "Task description 1", "2022-06-01", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 2", "Task description 2", "2022-06-02", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 3", "Task description 3", "2022-06-03", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 4", "Task description 4", "2022-06-04", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 5", "Task description 5", "2022-06-05", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 6", "Task description 6", "2022-06-06", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 7", "Task description 7", "2022-06-07", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 8", "Task description 8", "2022-06-08", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 9", "Task description 9", "2022-06-09", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 10", "Task description 10", "2022-06-10", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 11", "Task description 11", "2022-06-11", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 12", "Task description 12", "2022-06-12", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 13", "Task description 13", "2022-06-13", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 14", "Task description 14", "2022-06-14", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 15", "Task description 15", "2022-06-15", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 16", "Task description 16", "2022-06-16", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 17", "Task description 17", "2022-06-17", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 18", "Task description 18", "2022-06-18", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 19", "Task description 19", "2022-06-19", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 20", "Task description 20", "2022-06-20", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 21", "Task description 21", "2022-06-21", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 22", "Task description 22", "2022-06-22", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 23", "Task description 23", "2022-06-23", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 24", "Task description 24", "2022-06-24", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 25", "Task description 25", "2022-06-25", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 26", "Task description 26", "2022-06-26", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 27", "Task description 27", "2022-06-27", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 28", "Task description 28", "2022-06-28", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 29", "Task description 29", "2022-06-29", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 30", "Task description 30", "2022-06-30", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 31", "Task description 31", "2022-07-01", "false");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 32", "Task description 32", "2022-07-02", "true");
+INSERT INTO Task(taskName, taskDescription, dueDate, status) 
+    VALUES ("Task name 33", "Task description 33", "2022-07-03", "false");

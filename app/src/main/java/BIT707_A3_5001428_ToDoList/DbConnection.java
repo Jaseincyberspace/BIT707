@@ -20,58 +20,47 @@ public class DbConnection {
         try {
             DbConnection.DB = DriverManager.getConnection("jdbc:sqlite:toDo.db");
         }
-        catch(Exception e) {
+        catch(SQLException e) {
             System.out.println("Exception: " + e);
         }
     }
     
     /**
      * This method runs a database query to select all data from the 'Task' table.
+     * @return ArrayList
      */
-    public void selectAllFromTaskTable() {
+    public ArrayList readAllTasks() {
         
         String sql = "SELECT * FROM Task";
         Statement statement = null;
         ResultSet resultSet = null;
+        ArrayList<ArrayList<String>> listOfTasks = new ArrayList<>();
         
         try {
+            // Execute SQLite statement
             statement = DbConnection.DB.createStatement();
             resultSet = statement.executeQuery(sql);
+            
             // Get number of columns from metadata
             ResultSetMetaData metaData = resultSet.getMetaData();
             int numOfColumns = metaData.getColumnCount();
-
-            // Print results to console:
-            System.out.println(
-                    "______________________________"
-                    + "\n SQL query: " + sql 
-                    + "\n"
-                    + "\nResults: "
-            );
-            int i = 1;
-            String columnHeaders = "";
-            while(i <= numOfColumns) {
-                    columnHeaders += ("| " + metaData.getColumnName(i) + " ");
-                    i++;
-            }
-            System.out.println(columnHeaders);
-            System.out.println("------------------------------");
             
+            // Store resultSet data in a list           
             while (resultSet.next()) {
-                i = 1;
-                String tableRow = "";
-                while(i <= numOfColumns) {
-                    columnHeaders += (metaData.getColumnName(i) + " | ");
-                    tableRow += ("| " + resultSet.getString(i) + "          ");
-                    i++ ;
+                int i = 1;
+                ArrayList<String> tableRow = new ArrayList<>();
+                
+                while (i <= numOfColumns) {
+                    tableRow.add(resultSet.getString(i));
+                    i++;
                 }
-                System.out.println(tableRow);
-            }
-            System.out.println("______________________________");
+                listOfTasks.add(tableRow);
+            } 
         }
         // Handle invalid SQL queries
         catch (SQLException e) {
             System.out.println("Exception: " + e);
         } 
+        return listOfTasks;
     }
 }

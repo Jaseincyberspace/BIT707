@@ -3,21 +3,26 @@
  * Jason Norton - 5001428
  */
 package BIT707_A3_5001428_ToDoList;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author OEM
- */
 public class ListViewForm extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form ListViewForm
+     * Creates new ListViewForm
      */
     public ListViewForm() {
         initComponents();
         // Removes title bar from jInternalForm
         javax.swing.plaf.InternalFrameUI internalFrameUI = this.getUI();
         ((javax.swing.plaf.basic.BasicInternalFrameUI)internalFrameUI).setNorthPane(null);
+        
+        // Gets data for the jTable
+        App.controller.populateTableData(App.controller.getTaskList(), jTableListView);  
     }
 
     /**
@@ -38,60 +43,52 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         setOpaque(true);
         setPreferredSize(new java.awt.Dimension(406, 1463));
 
+        jScrollPaneListView.setBorder(null);
+
         jTableListView.setAutoCreateRowSorter(true);
+        jTableListView.setBackground(new java.awt.Color(255, 255, 255));
         jTableListView.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "Status", "Task", "Due Date"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableListView.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jTableListView.setMaximumSize(new java.awt.Dimension(2147483647, 128000000));
         jTableListView.setMinimumSize(new java.awt.Dimension(165, 180));
         jTableListView.setName(""); // NOI18N
-        jTableListView.setPreferredSize(new java.awt.Dimension(225, 1280));
+        jTableListView.setPreferredSize(null);
         jTableListView.setRowHeight(40);
+        jTableListView.setSelectionBackground(new java.awt.Color(79, 79, 79));
+        jTableListView.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jTableListView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTableListView.setShowGrid(true);
-        jTableListView.setShowHorizontalLines(true);
         jScrollPaneListView.setViewportView(jTableListView);
+        if (jTableListView.getColumnModel().getColumnCount() > 0) {
+            jTableListView.getColumnModel().getColumn(0).setMinWidth(20);
+            jTableListView.getColumnModel().getColumn(0).setPreferredWidth(80);
+            jTableListView.getColumnModel().getColumn(0).setMaxWidth(80);
+            jTableListView.getColumnModel().getColumn(2).setMinWidth(80);
+            jTableListView.getColumnModel().getColumn(2).setPreferredWidth(100);
+            jTableListView.getColumnModel().getColumn(2).setMaxWidth(100);
+        }
 
         getContentPane().add(jScrollPaneListView, java.awt.BorderLayout.CENTER);
 

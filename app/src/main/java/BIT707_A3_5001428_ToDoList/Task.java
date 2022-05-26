@@ -3,7 +3,8 @@
  * Jason Norton - 5001428
  */
 package BIT707_A3_5001428_ToDoList;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Task {
     /**
@@ -12,18 +13,23 @@ public class Task {
     private int taskNumber;
     private String taskName;
     private String taskDescription;
-    private Date taskDate;
+    private LocalDate taskDate;
     private boolean taskStatus;
     
     /**
      * Task Constructor 
+     * @param _taskNumber
+     * @param _taskName
+     * @param _taskDescription
+     * @param _taskDate
+     * @param _taskStatus
      */
-    public Task(int _taskNumber, String _taskName, String _taskDescription, Date _taskDate, boolean _taskStatus) {
+    public Task(int _taskNumber, String _taskName, String _taskDescription, LocalDate _taskDate, boolean _taskStatus) {
         this.taskNumber = _taskNumber;
         this.taskName = _taskName;
-        this.taskDescription = _taskDescription;
+        this.taskDescription = _taskDescription;      
+        this.taskStatus = _taskStatus;       
         this.taskDate = _taskDate;
-        this.taskStatus = _taskStatus;
     }
     
     // ---- GETTERS AND SETTERS: ---- //
@@ -72,14 +78,15 @@ public class Task {
     /**
      * @return the taskDate
      */
-    public Date getTaskDate() {
+    public LocalDate getTaskDate() {
         return taskDate;
     }
 
     /**
      * @param taskDate the taskDate to set
      */
-    public void setTaskDate(Date taskDate) {
+    public void setTaskDate(LocalDate taskDate) {
+        taskDate.format(DateTimeFormatter.ofPattern("dd MM yyyy"));
         this.taskDate = taskDate;
     }
 

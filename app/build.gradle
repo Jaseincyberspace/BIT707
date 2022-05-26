@@ -37,3 +37,8 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+// Uncomment this if required for error checking:
+//tasks.withType(JavaCompile) {
+//    options.compilerArgs += ['-Xlint:unchecked']
+//}

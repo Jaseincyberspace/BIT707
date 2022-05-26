@@ -4,17 +4,16 @@
  */
 package BIT707_A3_5001428_ToDoList;
 
-/**
- *
- * @author OEM
- */
 public class CalendarViewForm extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form CalendarViewForm
+     * Creates new CalendarViewForm
      */
     public CalendarViewForm() {
         initComponents();
+        // Removes title bar from jInternalForm
+        javax.swing.plaf.InternalFrameUI internalFrameUI = this.getUI();
+        ((javax.swing.plaf.basic.BasicInternalFrameUI)internalFrameUI).setNorthPane(null);
     }
 
     /**
