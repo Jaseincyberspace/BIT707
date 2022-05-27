@@ -26,6 +26,34 @@ public class DbConnection {
     }
     
     /**
+     * Adds a new task record to the database
+     * @param taskNumber
+     * @param taskName
+     * @param taskDescription
+     * @param taskDate
+     * @return 
+     */
+    public boolean createTask(String taskNumber, String taskName, String taskDescription, String taskDate) {
+        String sql = "INSERT INTO Task(taskNumber, taskName, taskDescription, dueDate, status) VALUES (" 
+                + "\"" + taskNumber + "\",\"" + taskName + "\",\"" + taskDescription + "\",\"" + taskDate + "\",\"" + "false\");";
+        Statement statement = null;
+        Boolean resultOfQuery = false;
+        
+        try {
+            // Execute SQLite statement
+            statement = DbConnection.DB.createStatement();
+            statement.executeUpdate(sql);
+            resultOfQuery = true;
+        }
+       
+        catch(SQLException e) {
+            // Handle invalid SQL queries
+            System.out.println("Exception: " + e);
+        } 
+        return resultOfQuery;        
+    }
+    
+    /**
      * This method runs a database query to select all data from the 'Task' table.
      * @return ArrayList
      */
@@ -62,5 +90,24 @@ public class DbConnection {
             System.out.println("Exception: " + e);
         } 
         return listOfTasks;
+    }
+    
+    public boolean deleteTask(String taskNumber) {
+        String sql = "DELETE FROM Task WHERE taskNumber = " + "\"" + taskNumber + "\";";
+        Statement statement = null;
+        Boolean resultOfQuery = false;
+        
+        try {
+            // Execute SQLite statement
+            statement = DbConnection.DB.createStatement();
+            statement.executeUpdate(sql);
+            resultOfQuery = true;
+        }
+       
+        catch(SQLException e) {
+            // Handle invalid SQL queries
+            System.out.println("Exception: " + e);
+        } 
+        return resultOfQuery;   
     }
 }
