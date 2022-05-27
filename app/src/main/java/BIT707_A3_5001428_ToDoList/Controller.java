@@ -3,11 +3,13 @@
  * Jason Norton - 5001428
  */
 package BIT707_A3_5001428_ToDoList;
+import java.awt.Color;
 import java.awt.Component;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -18,9 +20,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class Controller {
-    /**
-     * Controller Attributes
-     */
+    // Attributes
     final private DbConnection dbConnection;
     private ArrayList<Task> taskList;
     // Views
@@ -28,7 +28,7 @@ public class Controller {
     public static CalendarViewForm calendarViewForm = null;
     
     /**
-     * Controller Constructor
+     * Controller constructor
      */
     public Controller() {
         this.dbConnection = new DbConnection();
@@ -36,37 +36,41 @@ public class Controller {
              this.taskList = new ArrayList<>();
         }
     }
+    
+    /**
+    * @return the taskList
+    */
+    public ArrayList<Task> getTaskList() {
+        return taskList;
+    }
         
+    /**
+    * Instantiates database connection, gets data and displays the listView form
+    */
     public void run() {
-        /**
-        * Instantiates database connection
-        */
+        // Get data from database
         dbConnection.initDatabase();
         getAllTasks();
-       /**
-        * Displays MainForm as a MDI container
-        */
-       MainForm mainForm = new MainForm();
-       mainForm.setLocationRelativeTo(null);
-       mainForm.pack();
-       mainForm.setVisible(true);
-       /**
-        * Displays ListView form inside MainForm
-        */
-       listViewForm = new ListViewForm();
-       listViewForm.pack();
-       listViewForm.setVisible(true);
+        // Displays MainForm as a MDI container
+        MainForm mainForm = new MainForm();
+        mainForm.setLocationRelativeTo(null);
+        mainForm.pack();
+        mainForm.setVisible(true);
+        // Displays ListView form inside MainForm
+        listViewForm = new ListViewForm();
+        listViewForm.pack();
+        listViewForm.setVisible(true);
     }
     
+    /**
+    * Queries the database to create a list of all tasks
+    */
     public void getAllTasks() {
-        /**
-        * Queries the database
-        */
         ArrayList<ArrayList<String>> allTaskData = (dbConnection.readAllTasks()); 
         // Creates Task objects from data returned by query
         int listLength = allTaskData.size();
         for (int i = 0; i < listLength; i++) {
-            // Try to parse data
+            // Validates data retrieved from database
             int taskNumber = 0;
             String taskName = "";
             String taskDescription = "";
@@ -97,9 +101,7 @@ public class Controller {
                 errorType = "taskStatus";
                 System.out.println("EXCEPTION:" + e);
             }
-            /**
-             * Creates a new task with validated input data 
-             */
+            // Creates a new task with validated input data 
             if (errorType.equals("")) {
                 Task task = new Task(
                     taskNumber, 
@@ -128,10 +130,12 @@ public class Controller {
         }
     }
     
+    /**
+     * Uses the default JTable data model to add row data to the table
+     * @param tasks
+     * @param jTable 
+     */
     public void populateTableData(ArrayList<Task> tasks, javax.swing.JTable jTable) {  
-        /**
-         * Uses the default JTable data model to add row data to the table
-         */
         DefaultTableModel tableModel = (DefaultTableModel)jTable.getModel();
         // Removes any existing row data first
         tableModel.setRowCount(0);
@@ -160,6 +164,10 @@ public class Controller {
         tableModel.fireTableDataChanged();
     }
     
+    /**
+     * Renders the date column of jTable to display dates formatted for NZ (dd-MM-yyyy)
+     * @param jTable 
+     */
     public void renderTableDateColumn(javax.swing.JTable jTable) {
         TableCellRenderer tableCellRenderer = new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable jTable, Object value, boolean isSelected, boolean hasFocus, 
@@ -173,6 +181,10 @@ public class Controller {
         jTable.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
     }
     
+    /**
+     * Sets default sort order of jTable data based on date column
+     * @param jTable 
+     */
     public void sortTable(javax.swing.JTable jTable) {
         // Sorts Jtable data by the date column
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable.getModel());
@@ -182,17 +194,20 @@ public class Controller {
         sorter.setSortKeys(sortKeys);
     }
     
+    /**
+     * Formats date for New Zealand
+     * @param localDate
+     * @return 
+     */
     public String formatDate(LocalDate localDate) {
-        /**
-         * Formats date for New Zealand
-         */ 
         return (localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
-        
+    
+    /**
+     * Creates a new listView form and displays it on screen
+     * @param jDesktopPane_formContainer 
+     */
     public void displayListView(javax.swing.JDesktopPane jDesktopPane_formContainer) {
-        /**
-        * Creates a new listView form and displays it on screen
-        */
         if(listViewForm != null && calendarViewForm != null) {
             calendarViewForm.setVisible(false);
             listViewForm.setVisible(true);
@@ -212,10 +227,11 @@ public class Controller {
         }
     }
     
+    /**
+     * Creates a new calendarView form and displays it on screen
+     * @param jDesktopPane_formContainer 
+     */
     public void displayCalendarView(javax.swing.JDesktopPane jDesktopPane_formContainer) {
-        /**
-        * Creates a new calendarView form and displays it on screen
-        */
         if(calendarViewForm != null && listViewForm != null) {
             listViewForm.setVisible(false);
             calendarViewForm.setVisible(true);
@@ -233,10 +249,143 @@ public class Controller {
             calendarViewForm.setVisible(true);
         }
     }
+    
+    public boolean addTask(
+    javax.swing.JTextField taskNameField, 
+    javax.swing.JTextArea taskDetailsField, 
+    javax.swing.JTextField taskDateField) {
+        String taskNumber = "";
+        String taskName = "";
+        String taskDescription = taskDetailsField.getText(); // This field can be blank or contain any string (validation not reqiired)
+        String taskDate = ""; 
+        boolean validInput = false;
+        
+        // Generates new taskID
+        try {
+            taskNumber = String.valueOf(taskList.size() + 1);
+        }
+        catch(Exception e) {
+            System.out.println("Exception: " + e);
+        }   
+        
+        // Validates input
+        if(!taskNameField.getText().equals("") && !taskNameField.getText().equals("Enter task name")) {
+            taskName = taskNameField.getText();
+            validInput = true;
+        }
+        else {
+            // Displays error message to user if input is invalid
+            taskNameField.setText("*Task name is required");
+            taskNameField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
+            validInput = false;
+        }
+        if(!taskDateField.getText().equals("") && !taskDateField.getText().equals("dd-mm-yyyy")) {
+            // Reverses the string to check it can be parsed into a valid ISO date format
+            
+            try {
+                // Parses string into date with format dd-MM-yyyy 
+                String unverifiedDate = taskDateField.getText();
+                LocalDate dateNZFormat = LocalDate.parse(unverifiedDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                // Parses date into ISO format for storage in the database
+                LocalDate localDate = LocalDate.of(dateNZFormat.getYear(), dateNZFormat.getMonth(), dateNZFormat.getDayOfMonth());
+                localDate.format(DateTimeFormatter.ISO_DATE);
+                taskDate = String.valueOf(localDate);
+            }
+            catch(Exception e) {
+                // Displays error message to user if input is invalid
+                taskDateField.setText("*Must be: dd-mm-yyyy");
+                taskDateField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
+                validInput = false;
+            }
+        }
+        else {
+            // Displays error message to user if input is invalid
+            taskDateField.setText("*Date required");
+            taskDateField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
+            validInput = false;
+        }
+                        
+        // If input is valid a record is added to the database 
+        if(validInput) {
+            Boolean taskAddedToDB = dbConnection.createTask(taskNumber, taskName, taskDescription, taskDate);
+            // If the database update is successful the task is added to the taskList
+            if(taskAddedToDB) {
+                Task task = parseStringsToTask(taskNumber, taskName, taskDescription, taskDate, "false");
+                if(task.getTaskNumber() != -1) {
+                    taskList.add(task);
+                    return true;
+                }
+                else {
+                    System.out.println("Error: Unable to add task to controller's task list");
+                    dbConnection.deleteTask(String.valueOf(taskNumber));
+                }
+            }
+            else {
+                System.out.println("Error: Unable to add task to database");
+            }
+        }
+        else {
+            System.out.println("Error: Unable to add task due to invalid user input");
+        }
+    return false;
+    }
+    
     /**
-    * @return the taskList
-    */
-    public ArrayList<Task> getTaskList() {
-        return taskList;
+     * Parses String data into types required for task object. Returns -1 if successful, 
+     * otherwise returns an int relative to the argument index of the parameter that could not be parsed
+     * @param _taskNumber
+     * @param _taskName
+     * @param _taskDescription
+     * @param _taskDate
+     * @param _taskStatus
+     * @return 
+     */
+    public Task parseStringsToTask(String _taskNumber, String _taskName, String _taskDescription, String _taskDate, String _taskStatus) {   
+        int taskNumber = -1;
+        String taskName = _taskName;
+        String taskDescription = _taskDescription;
+        LocalDate taskDate = LocalDate.now();
+        boolean taskStatus = false;
+        int invalidParameter = -1;            
+
+        // Tries to parse parameters
+        try {
+            taskNumber = Integer.parseInt(_taskNumber); 
+        }  
+        catch(NumberFormatException e) {
+            invalidParameter = 1;
+            System.out.println("EXCEPTION:" + e);
+        }                   
+        try {
+            taskDate = LocalDate.parse(_taskDate);                               
+        }
+        catch(java.time.format.DateTimeParseException e) {
+            invalidParameter = 4;
+            System.out.println("EXCEPTION:" + e);
+        } 
+        try {
+            taskStatus = Boolean.parseBoolean(_taskStatus); 
+        }
+        catch(Exception e) {
+            invalidParameter = 5;
+            System.out.println("EXCEPTION:" + e);
+        }
+        
+        // Creates a new Task object with default values
+        LocalDate localDate = LocalDate.now();
+        Task task = new Task(-1, "taskName", "taskDescription", localDate, false);
+        
+        switch(invalidParameter) {
+            // All parameters parsed ok so the Task is created with the given values
+            case -1:
+                task = new Task(taskNumber, taskName, taskDescription, taskDate, taskStatus);
+                break;
+            // One or more parameters could not be parsed 
+            // Task retains default values and taskNumber == -1 to identify it as a failed attempt
+            default:
+                task = new Task(taskNumber, taskName, taskDescription, taskDate, taskStatus);
+                break;           
+        }   
+        return task;       
     }
 }
