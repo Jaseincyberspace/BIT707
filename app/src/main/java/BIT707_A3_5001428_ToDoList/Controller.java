@@ -5,14 +5,26 @@
 package BIT707_A3_5001428_ToDoList;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.text.AttributedString;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -20,10 +32,13 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class Controller {
-    // Attributes
     final private DbConnection dbConnection;
-    private ArrayList<Task> taskList;
+    private static ArrayList<Task> taskList;
+    private int selectedRow;
+    private int selectedTaskNumber;
+    
     // Views
+    public static MainForm mainForm = null;
     public static ListViewForm listViewForm = null;
     public static CalendarViewForm calendarViewForm = null;
     
@@ -52,7 +67,7 @@ public class Controller {
         dbConnection.initDatabase();
         getAllTasks();
         // Displays MainForm as a MDI container
-        MainForm mainForm = new MainForm();
+        mainForm = new MainForm();
         mainForm.setLocationRelativeTo(null);
         mainForm.pack();
         mainForm.setVisible(true);
@@ -86,7 +101,7 @@ public class Controller {
                 System.out.println("EXCEPTION:" + e);
             }                   
             taskName = allTaskData.get(i).get(1); 
-            taskDescription = allTaskData.get(i).get(1); 
+            taskDescription = allTaskData.get(i).get(2); 
             try {
                 taskDate = LocalDate.parse(allTaskData.get(i).get(3));                               
             }
@@ -135,27 +150,31 @@ public class Controller {
      * @param tasks
      * @param jTable 
      */
-    public void populateTableData(ArrayList<Task> tasks, javax.swing.JTable jTable) {  
+     public void populateTableData(javax.swing.JTable jTable) {  
         DefaultTableModel tableModel = (DefaultTableModel)jTable.getModel();
         // Removes any existing row data first
         tableModel.setRowCount(0);
         jTable.setModel(tableModel);
         // Adds row data from list of Task objects
-        for (int i = 0; i < tasks.size(); i++) {
+        for (int i = 0; i < taskList.size(); i++) {
             // Breaks down Task object into its attributes (one attribute goes into each column)
-            Boolean taskStatus = tasks.get(i).isTaskStatus();
-            String taskName = String.valueOf(tasks.get(i).getTaskName());
-            LocalDate taskDate = tasks.get(i).getTaskDate();
+            int taskNumber = taskList.get(i).getTaskNumber();
+            Boolean taskStatus = taskList.get(i).isTaskStatus();
+            String taskName = String.valueOf(taskList.get(i).getTaskName());
+            LocalDate taskDate = taskList.get(i).getTaskDate();
             // Formats date for NZ
             // String taskDate = formatDate((tasks.get(i).getTaskDate()));
             // Sets row data
             Object[] rowData = {
+                taskNumber,
                 taskStatus, 
                 taskName,
                 taskDate
             };
             tableModel.addRow(rowData);
         }
+        int numOfRows = tableModel.getRowCount();
+        Vector tableData = tableModel.getDataVector();
         // Displays dates as dd-mm-yyyy        
         renderTableDateColumn(jTable);
         // Sorts table by date column
@@ -163,7 +182,7 @@ public class Controller {
         // Notifies of changes to the data model
         tableModel.fireTableDataChanged();
     }
-    
+        
     /**
      * Renders the date column of jTable to display dates formatted for NZ (dd-MM-yyyy)
      * @param jTable 
@@ -178,7 +197,7 @@ public class Controller {
                 return super.getTableCellRendererComponent(jTable, value, isSelected, hasFocus, row, column);
             }  
         };
-        jTable.getColumnModel().getColumn(2).setCellRenderer(tableCellRenderer);
+        jTable.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
     }
     
     /**
@@ -190,7 +209,7 @@ public class Controller {
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable.getModel());
         jTable.setRowSorter(sorter);
         List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(3, SortOrder.ASCENDING));
         sorter.setSortKeys(sortKeys);
     }
     
@@ -203,6 +222,30 @@ public class Controller {
         return (localDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
     
+    /**
+     * Displays a dialog showing the detailed view of a task when user double clicks on a table row 
+     * @param jTable 
+     */
+    public void addTableMouseClickListener(javax.swing.JTable jTable, javax.swing.JDialog dialog) {
+        jTable.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent mouseEvent) {
+                // Gets task number from selected table row
+                JTable table =(JTable) mouseEvent.getSource();
+                Point point = mouseEvent.getPoint();
+                int row = table.rowAtPoint(point);
+                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                    // Saves row and task number variables for use later (otherwise they are lost when the dialog box is displayed)
+                    selectedRow = jTable.getSelectedRow();
+                    selectedTaskNumber = (int)jTable.getValueAt(selectedRow, 0);        
+                    // Gets selected task from database
+                    ArrayList<String> taskComponents = dbConnection.readTask(String.valueOf(selectedTaskNumber));
+                    // Displays task details in dialog box
+                    listViewForm.displayTask(taskComponents);
+                }
+            }
+        });
+    }
+
     /**
      * Creates a new listView form and displays it on screen
      * @param jDesktopPane_formContainer 
@@ -259,6 +302,7 @@ public class Controller {
         String taskDescription = taskDetailsField.getText(); // This field can be blank or contain any string (validation not reqiired)
         String taskDate = ""; 
         boolean validInput = false;
+        boolean result = false;
         
         // Generates new taskID
         try {
@@ -313,7 +357,7 @@ public class Controller {
                 Task task = parseStringsToTask(taskNumber, taskName, taskDescription, taskDate, "false");
                 if(task.getTaskNumber() != -1) {
                     taskList.add(task);
-                    return true;
+                    result = true;
                 }
                 else {
                     System.out.println("Error: Unable to add task to controller's task list");
@@ -327,7 +371,52 @@ public class Controller {
         else {
             System.out.println("Error: Unable to add task due to invalid user input");
         }
-    return false;
+    return result;
+    }
+            
+    public boolean deleteTask(javax.swing.JTable jTable, int selectedRow, int selectedTaskNumber) {
+        boolean result = false;
+        if(dbConnection.deleteTask(String.valueOf(selectedTaskNumber))) {
+            for(int i = 0; i < taskList.size(); i++) {
+                if(taskList.get(i).getTaskNumber() == selectedTaskNumber) {
+                    taskList.remove(i);
+                    result = true;
+                }
+            }
+            populateTableData(jTable);
+        }
+        return result;
+    }
+    
+    public boolean editTaskStatus(javax.swing.JTable jTable) {
+        boolean result = false;
+        // Finds the selected task in the taskList
+        for(int i = 0; i < taskList.size(); i++) {
+            if(taskList.get(i).getTaskNumber() == selectedTaskNumber) {
+                                               
+                // Finds the current status of the specified task
+                boolean status = taskList.get(i).isTaskStatus();
+                String updatedStatus = String.valueOf(!status);
+                // Updates the database to change the status to the opposite of what it currently is
+                 if(dbConnection.updateTaskStatus(String.valueOf(selectedTaskNumber), updatedStatus)) {
+                    // Updates the taskList
+                    taskList.get(i).setTaskStatus(!status);
+                
+                populateTableData(jTable);
+                    result = true;
+     
+                    // Print to console for debugging purposes
+                    System.out.println(selectedTaskNumber + " was found at index " + selectedRow);
+                    System.out.println(taskList.get(i).getTaskNumber() + " " + taskList.get(i).getTaskName() + " " + taskList.get(i).getTaskDescription() + " " + taskList.get(i).isTaskStatus());
+                };
+            }
+            else {
+                System.out.println("Unable to update task status. Task number " + selectedTaskNumber + " not found in task list");
+            }
+        }
+        // Repopulates the table data
+        populateTableData(jTable);
+    return result;
     }
     
     /**
