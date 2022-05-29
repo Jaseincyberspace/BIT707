@@ -26,7 +26,8 @@ public class DbConnection {
     }
     
     /**
-     * Adds a new task record to the database
+     * Generates a SQLite query string to add a new task record in the 'Task' table
+     * The string is passed to insertUpdateOrDelete() for execution
      * @param taskNumber
      * @param taskName
      * @param taskDescription
@@ -36,25 +37,54 @@ public class DbConnection {
     public boolean createTask(String taskNumber, String taskName, String taskDescription, String taskDate) {
         String sql = "INSERT INTO Task(taskNumber, taskName, taskDescription, dueDate, status) VALUES (" 
                 + "\"" + taskNumber + "\",\"" + taskName + "\",\"" + taskDescription + "\",\"" + taskDate + "\",\"" + "false\");";
+        return insertUpdateOrDelete(sql); 
+    }
+        
+    public ArrayList readTask(String taskNumber) {
+        String sql = "SELECT * FROM Task WHERE taskNumber = " + "\"" + taskNumber + "\";";
         Statement statement = null;
-        Boolean resultOfQuery = false;
+        ResultSet resultSet = null;
+        ArrayList<String> tableRow = new ArrayList<String>();
         
         try {
             // Execute SQLite statement
             statement = DbConnection.DB.createStatement();
-            statement.executeUpdate(sql);
-            resultOfQuery = true;
+            resultSet = statement.executeQuery(sql);
+            
+            // Get number of columns from metadata
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int numOfColumns = metaData.getColumnCount();
+            
+            // Store resultSet data in a list
+            if(resultSet.next()) {
+                int i = 1;
+                while(i <= numOfColumns) {
+                    tableRow.add(resultSet.getString(i));
+                    i++;
+                }
+            }
         }
-       
+        // Handle invalid SQL queries
         catch(SQLException e) {
-            // Handle invalid SQL queries
             System.out.println("Exception: " + e);
-        } 
-        return resultOfQuery;        
+        }
+        return tableRow;
     }
     
     /**
-     * This method runs a database query to select all data from the 'Task' table.
+     * Generates a SQLite query string to update the status of a selected task in the 'Task' table
+     * The string is passed to insertUpdateOrDelete() for execution
+     * @param taskNumber
+     * @param status
+     * @return 
+     */
+    public boolean updateTaskStatus (String taskNumber, String status) {
+        String sql = "UPDATE Task SET status = " + "\"" + status + "\"" + "WHERE taskNumber = " + "\"" + taskNumber + "\";";
+        return insertUpdateOrDelete(sql);
+    }
+    
+    /**
+     * Runs a database query to select all data from the 'Task' table.
      * @return ArrayList
      */
     public ArrayList readAllTasks() {
@@ -74,7 +104,7 @@ public class DbConnection {
             int numOfColumns = metaData.getColumnCount();
             
             // Store resultSet data in a list           
-            while (resultSet.next()) {
+            while(resultSet.next()) {
                 int i = 1;
                 ArrayList<String> tableRow = new ArrayList<>();
                 
@@ -86,21 +116,36 @@ public class DbConnection {
             } 
         }
         // Handle invalid SQL queries
-        catch (SQLException e) {
+        catch(SQLException e) {
             System.out.println("Exception: " + e);
         } 
         return listOfTasks;
     }
     
+    /**
+     * Generates a SQLite query string to remove the selected task from the 'Task' table
+     * The string is passed to insertUpdateOrDelete() for execution
+     * @param taskNumber
+     * @return 
+     */
     public boolean deleteTask(String taskNumber) {
         String sql = "DELETE FROM Task WHERE taskNumber = " + "\"" + taskNumber + "\";";
+        return insertUpdateOrDelete(sql);  
+    }
+    
+    /**
+     * Executes insert, update, or delete SQLite queries and returns a boolean value to confirm success or failure
+     * @param sqlQuery
+     * @return 
+     */
+    public boolean insertUpdateOrDelete(String sqlQuery) {
         Statement statement = null;
-        Boolean resultOfQuery = false;
+        boolean resultOfQuery = false;
         
         try {
             // Execute SQLite statement
             statement = DbConnection.DB.createStatement();
-            statement.executeUpdate(sql);
+            statement.executeUpdate(sqlQuery);
             resultOfQuery = true;
         }
        
