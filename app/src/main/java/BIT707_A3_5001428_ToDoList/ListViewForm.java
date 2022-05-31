@@ -29,7 +29,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         App.controller.populateTableData(jTable_listView);  
         
         // Handles double mouse clicks on table rows
-        App.controller.addTableMouseClickListener(jTable_listView, jDialog_viewTask);    
+        App.controller.addTableMouseClickListener(jTable_listView, jDialog_viewTask);
     }
         
     public void displayTask(ArrayList<String> taskComponents) {
@@ -67,8 +67,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jButton_addTaskCancel = new javax.swing.JButton();
         jLabel_addTaskDetailsIcon = new javax.swing.JLabel();
         jLabel_addTaskDateIcon = new javax.swing.JLabel();
-        jPanel_errorMessage = new javax.swing.JPanel();
-        jLabel_errorMessage = new javax.swing.JLabel();
+        jPanel_addTaskErrorMessage = new javax.swing.JPanel();
+        jLabel_addTaskErrorMessage = new javax.swing.JLabel();
         jDialog_viewTask = new javax.swing.JDialog();
         jPanel_viewTaskPanel = new javax.swing.JPanel();
         jButton_viewTaskMarkCompleted = new javax.swing.JButton();
@@ -79,6 +79,18 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jLabel_viewTaskDetailsIcon = new javax.swing.JLabel();
         jLabel_viewTaskDateIcon = new javax.swing.JLabel();
         jButton_editTask = new javax.swing.JButton();
+        jDialog_editTask = new javax.swing.JDialog();
+        jPanel_editTaskPanel = new javax.swing.JPanel();
+        jButton_editTaskSave = new javax.swing.JButton();
+        jTextField_editTaskName = new javax.swing.JTextField();
+        jTextField_editTaskDate = new javax.swing.JTextField();
+        jScrollPane_editTask = new javax.swing.JScrollPane();
+        jTextArea_editTaskDetails = new javax.swing.JTextArea();
+        jButton_editTaskCancel = new javax.swing.JButton();
+        jLabel_editTaskDetailsIcon = new javax.swing.JLabel();
+        jLabel_editTaskDateIcon = new javax.swing.JLabel();
+        jPanel_editTaskErrorMessage = new javax.swing.JPanel();
+        jLabel_editTaskErrorMessage = new javax.swing.JLabel();
         jScrollPane_listView = new javax.swing.JScrollPane();
         jTable_listView = new javax.swing.JTable();
         jPanel_addTask = new javax.swing.JPanel();
@@ -97,15 +109,16 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jDialog_addTask.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
         jDialog_addTask.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         jDialog_addTask.setName(""); // NOI18N
-        jDialog_addTask.setPreferredSize(new java.awt.Dimension(437, 390));
         jDialog_addTask.setResizable(false);
 
         jPanel_addTaskPanel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_addTaskPanel.setName("jPanel_addTaskPanel"); // NOI18N
 
         jButton_addTaskSave.setBackground(new java.awt.Color(75, 114, 153));
         jButton_addTaskSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton_addTaskSave.setForeground(new java.awt.Color(255, 255, 255));
         jButton_addTaskSave.setText("Save");
+        jButton_addTaskSave.setName("jButton_addTaskSave"); // NOI18N
         jButton_addTaskSave.setNextFocusableComponent(jButton_addTaskCancel);
         jButton_addTaskSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,6 +131,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTextField_addTaskName.setForeground(new java.awt.Color(0, 0, 0));
         jTextField_addTaskName.setText("Enter task name");
         jTextField_addTaskName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        jTextField_addTaskName.setName("jTextField_addTaskName"); // NOI18N
         jTextField_addTaskName.setNextFocusableComponent(jTextArea_addTaskDetails);
         jTextField_addTaskName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -133,6 +147,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTextField_addTaskDate.setForeground(new java.awt.Color(0, 0, 0));
         jTextField_addTaskDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField_addTaskDate.setText("dd-mm-yyyy");
+        jTextField_addTaskDate.setName("jTextField_addTaskDate"); // NOI18N
         jTextField_addTaskDate.setNextFocusableComponent(jButton_addTaskSave);
         jTextField_addTaskDate.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -143,13 +158,18 @@ public class ListViewForm extends javax.swing.JInternalFrame {
             }
         });
 
+        jScrollPane_addTask.setName("jScrollPane_addTask"); // NOI18N
+
         jTextArea_addTaskDetails.setBackground(new java.awt.Color(224, 224, 244));
         jTextArea_addTaskDetails.setColumns(20);
         jTextArea_addTaskDetails.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextArea_addTaskDetails.setForeground(new java.awt.Color(0, 0, 0));
+        jTextArea_addTaskDetails.setLineWrap(true);
         jTextArea_addTaskDetails.setRows(5);
         jTextArea_addTaskDetails.setText("Add task details");
+        jTextArea_addTaskDetails.setWrapStyleWord(true);
         jTextArea_addTaskDetails.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        jTextArea_addTaskDetails.setName("jTextArea_addTaskDetails"); // NOI18N
         jTextArea_addTaskDetails.setNextFocusableComponent(jTextField_addTaskDate);
         jTextArea_addTaskDetails.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -165,6 +185,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jButton_addTaskCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton_addTaskCancel.setForeground(new java.awt.Color(255, 255, 255));
         jButton_addTaskCancel.setText("Cancel");
+        jButton_addTaskCancel.setName("jButton_addTaskCancel"); // NOI18N
         jButton_addTaskCancel.setNextFocusableComponent(jTextField_addTaskName);
         jButton_addTaskCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,33 +194,37 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         });
 
         jLabel_addTaskDetailsIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/comment.png"))); // NOI18N
+        jLabel_addTaskDetailsIcon.setName("jLabel_addTaskDetailsIcon"); // NOI18N
 
         jLabel_addTaskDateIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar.png"))); // NOI18N
+        jLabel_addTaskDateIcon.setName("jLabel_addTaskDateIcon"); // NOI18N
 
-        jPanel_errorMessage.setBackground(new java.awt.Color(224, 224, 244));
+        jPanel_addTaskErrorMessage.setBackground(new java.awt.Color(224, 224, 244));
+        jPanel_addTaskErrorMessage.setName("jPanel_addTaskErrorMessage"); // NOI18N
 
-        jLabel_errorMessage.setBackground(new java.awt.Color(69, 69, 69));
-        jLabel_errorMessage.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel_errorMessage.setForeground(new java.awt.Color(204, 0, 102));
-        jLabel_errorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_addTaskErrorMessage.setBackground(new java.awt.Color(69, 69, 69));
+        jLabel_addTaskErrorMessage.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel_addTaskErrorMessage.setForeground(new java.awt.Color(204, 0, 102));
+        jLabel_addTaskErrorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_addTaskErrorMessage.setName("jLabel_addTaskErrorMessage"); // NOI18N
 
-        javax.swing.GroupLayout jPanel_errorMessageLayout = new javax.swing.GroupLayout(jPanel_errorMessage);
-        jPanel_errorMessage.setLayout(jPanel_errorMessageLayout);
-        jPanel_errorMessageLayout.setHorizontalGroup(
-            jPanel_errorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanel_addTaskErrorMessageLayout = new javax.swing.GroupLayout(jPanel_addTaskErrorMessage);
+        jPanel_addTaskErrorMessage.setLayout(jPanel_addTaskErrorMessageLayout);
+        jPanel_addTaskErrorMessageLayout.setHorizontalGroup(
+            jPanel_addTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
-            .addGroup(jPanel_errorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel_errorMessageLayout.createSequentialGroup()
+            .addGroup(jPanel_addTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_addTaskErrorMessageLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel_errorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                    .addComponent(jLabel_addTaskErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
                     .addContainerGap()))
         );
-        jPanel_errorMessageLayout.setVerticalGroup(
-            jPanel_errorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel_addTaskErrorMessageLayout.setVerticalGroup(
+            jPanel_addTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 57, Short.MAX_VALUE)
-            .addGroup(jPanel_errorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel_errorMessageLayout.createSequentialGroup()
-                    .addComponent(jLabel_errorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel_addTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_addTaskErrorMessageLayout.createSequentialGroup()
+                    .addComponent(jLabel_addTaskErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(0, 21, Short.MAX_VALUE)))
         );
 
@@ -226,7 +251,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton_addTaskCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel_errorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel_addTaskErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel_addTaskPanelLayout.setVerticalGroup(
             jPanel_addTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,7 +271,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
                     .addComponent(jButton_addTaskSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton_addTaskCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel_errorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel_addTaskErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -263,7 +288,6 @@ public class ListViewForm extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jDialog_viewTask.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog_viewTask.setTitle("View Task");
         jDialog_viewTask.setAlwaysOnTop(true);
         jDialog_viewTask.setBackground(new java.awt.Color(79, 79, 79));
@@ -273,17 +297,19 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jDialog_viewTask.setLocation(new java.awt.Point(0, 0));
         jDialog_viewTask.setMinimumSize(new java.awt.Dimension(480, 435));
         jDialog_viewTask.setModalExclusionType(null);
+        jDialog_viewTask.setModalityType(null);
         jDialog_viewTask.setName(""); // NOI18N
-        jDialog_viewTask.setPreferredSize(new java.awt.Dimension(437, 390));
         jDialog_viewTask.setResizable(false);
 
         jPanel_viewTaskPanel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_viewTaskPanel.setName("jPanel_viewTaskPanel"); // NOI18N
 
         jButton_viewTaskMarkCompleted.setBackground(new java.awt.Color(75, 114, 153));
         jButton_viewTaskMarkCompleted.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton_viewTaskMarkCompleted.setForeground(new java.awt.Color(255, 255, 255));
         jButton_viewTaskMarkCompleted.setText("Mark as completed");
-        jButton_viewTaskMarkCompleted.setNextFocusableComponent(jButton_addTaskCancel);
+        jButton_viewTaskMarkCompleted.setName("jButton_viewTaskMarkCompleted"); // NOI18N
+        jButton_viewTaskMarkCompleted.setNextFocusableComponent(jTextField_viewTaskName);
         jButton_viewTaskMarkCompleted.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_viewTaskMarkCompletedActionPerformed(evt);
@@ -296,7 +322,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTextField_viewTaskName.setForeground(new java.awt.Color(0, 0, 0));
         jTextField_viewTaskName.setText("Task name");
         jTextField_viewTaskName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        jTextField_viewTaskName.setNextFocusableComponent(jTextArea_addTaskDetails);
+        jTextField_viewTaskName.setName("jTextField_viewTaskName"); // NOI18N
+        jTextField_viewTaskName.setNextFocusableComponent(jButton_editTask);
 
         jTextField_viewTaskDate.setEditable(false);
         jTextField_viewTaskDate.setBackground(new java.awt.Color(224, 224, 224));
@@ -304,28 +331,38 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTextField_viewTaskDate.setForeground(new java.awt.Color(0, 0, 0));
         jTextField_viewTaskDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField_viewTaskDate.setText("Due date");
-        jTextField_viewTaskDate.setNextFocusableComponent(jButton_addTaskSave);
+        jTextField_viewTaskDate.setName("jTextField_viewTaskDate"); // NOI18N
+        jTextField_viewTaskDate.setNextFocusableComponent(jButton_viewTaskMarkCompleted);
+
+        jScrollPane_viewTask.setName("jScrollPane_viewTask"); // NOI18N
 
         jTextArea_viewTaskDetails.setEditable(false);
         jTextArea_viewTaskDetails.setBackground(new java.awt.Color(224, 224, 244));
         jTextArea_viewTaskDetails.setColumns(20);
         jTextArea_viewTaskDetails.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextArea_viewTaskDetails.setForeground(new java.awt.Color(0, 0, 0));
+        jTextArea_viewTaskDetails.setLineWrap(true);
         jTextArea_viewTaskDetails.setRows(5);
         jTextArea_viewTaskDetails.setText("Task details");
+        jTextArea_viewTaskDetails.setWrapStyleWord(true);
         jTextArea_viewTaskDetails.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        jTextArea_viewTaskDetails.setNextFocusableComponent(jTextField_addTaskDate);
+        jTextArea_viewTaskDetails.setName("jTextArea_viewTaskDetails"); // NOI18N
+        jTextArea_viewTaskDetails.setNextFocusableComponent(jTextField_viewTaskDate);
         jScrollPane_viewTask.setViewportView(jTextArea_viewTaskDetails);
 
         jLabel_viewTaskDetailsIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/comment.png"))); // NOI18N
+        jLabel_viewTaskDetailsIcon.setName("jLabel_viewTaskDetailsIcon"); // NOI18N
 
         jLabel_viewTaskDateIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar.png"))); // NOI18N
+        jLabel_viewTaskDateIcon.setName("jLabel_viewTaskDateIcon"); // NOI18N
 
         jButton_editTask.setBackground(new java.awt.Color(255, 255, 255));
         jButton_editTask.setIcon(new javax.swing.ImageIcon(getClass().getResource("/editing.png"))); // NOI18N
         jButton_editTask.setBorder(null);
         jButton_editTask.setBorderPainted(false);
         jButton_editTask.setFocusPainted(false);
+        jButton_editTask.setName("jButton_editTask"); // NOI18N
+        jButton_editTask.setNextFocusableComponent(jTextArea_viewTaskDetails);
         jButton_editTask.setPreferredSize(new java.awt.Dimension(34, 34));
         jButton_editTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,9 +378,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel_viewTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_viewTaskDateIcon)
-                    .addGroup(jPanel_viewTaskPanelLayout.createSequentialGroup()
-                        .addComponent(jButton_viewTaskMarkCompleted, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jButton_viewTaskMarkCompleted, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel_viewTaskPanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(jLabel_viewTaskDetailsIcon)
@@ -390,13 +426,207 @@ public class ListViewForm extends javax.swing.JInternalFrame {
             .addComponent(jPanel_viewTaskPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jDialog_editTask.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jDialog_editTask.setTitle("Edit Task");
+        jDialog_editTask.setAlwaysOnTop(true);
+        jDialog_editTask.setBackground(new java.awt.Color(79, 79, 79));
+        jDialog_editTask.setFocusTraversalPolicyProvider(true);
+        jDialog_editTask.setIconImage(null);
+        jDialog_editTask.setIconImages(null);
+        jDialog_editTask.setLocation(new java.awt.Point(0, 0));
+        jDialog_editTask.setMinimumSize(new java.awt.Dimension(480, 435));
+        jDialog_editTask.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        jDialog_editTask.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        jDialog_editTask.setName(""); // NOI18N
+        jDialog_editTask.setResizable(false);
+
+        jPanel_editTaskPanel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_editTaskPanel.setName("jPanel_editTaskPanel"); // NOI18N
+
+        jButton_editTaskSave.setBackground(new java.awt.Color(75, 114, 153));
+        jButton_editTaskSave.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton_editTaskSave.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_editTaskSave.setText("Save");
+        jButton_editTaskSave.setName("jButton_editTaskSave"); // NOI18N
+        jButton_editTaskSave.setNextFocusableComponent(jTextField_editTaskName);
+        jButton_editTaskSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_editTaskSaveActionPerformed(evt);
+            }
+        });
+
+        jTextField_editTaskName.setBackground(new java.awt.Color(224, 224, 224));
+        jTextField_editTaskName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextField_editTaskName.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField_editTaskName.setText("Enter task name");
+        jTextField_editTaskName.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        jTextField_editTaskName.setName("jTextField_editTaskName"); // NOI18N
+        jTextField_editTaskName.setNextFocusableComponent(jTextArea_editTaskDetails);
+        jTextField_editTaskName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField_editTaskNameFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField_editTaskNameFocusLost(evt);
+            }
+        });
+
+        jTextField_editTaskDate.setBackground(new java.awt.Color(224, 224, 224));
+        jTextField_editTaskDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextField_editTaskDate.setForeground(new java.awt.Color(0, 0, 0));
+        jTextField_editTaskDate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField_editTaskDate.setText("dd-mm-yyyy");
+        jTextField_editTaskDate.setName("jTextField_editTaskDate"); // NOI18N
+        jTextField_editTaskDate.setNextFocusableComponent(jButton_editTaskCancel);
+        jTextField_editTaskDate.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextField_editTaskDateFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextField_editTaskDateFocusLost(evt);
+            }
+        });
+
+        jScrollPane_editTask.setName("jScrollPane_editTask"); // NOI18N
+
+        jTextArea_editTaskDetails.setBackground(new java.awt.Color(224, 224, 244));
+        jTextArea_editTaskDetails.setColumns(20);
+        jTextArea_editTaskDetails.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextArea_editTaskDetails.setForeground(new java.awt.Color(0, 0, 0));
+        jTextArea_editTaskDetails.setLineWrap(true);
+        jTextArea_editTaskDetails.setRows(5);
+        jTextArea_editTaskDetails.setText("Add task details");
+        jTextArea_editTaskDetails.setWrapStyleWord(true);
+        jTextArea_editTaskDetails.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        jTextArea_editTaskDetails.setName("jTextArea_editTaskDetails"); // NOI18N
+        jTextArea_editTaskDetails.setNextFocusableComponent(jTextField_editTaskDate);
+        jTextArea_editTaskDetails.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTextArea_editTaskDetailsFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jTextArea_editTaskDetailsFocusLost(evt);
+            }
+        });
+        jScrollPane_editTask.setViewportView(jTextArea_editTaskDetails);
+
+        jButton_editTaskCancel.setBackground(new java.awt.Color(75, 114, 153));
+        jButton_editTaskCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton_editTaskCancel.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_editTaskCancel.setText("Cancel");
+        jButton_editTaskCancel.setName("jButton_editTaskCancel"); // NOI18N
+        jButton_editTaskCancel.setNextFocusableComponent(jButton_editTaskSave);
+        jButton_editTaskCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_editTaskCancelActionPerformed(evt);
+            }
+        });
+
+        jLabel_editTaskDetailsIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/comment.png"))); // NOI18N
+        jLabel_editTaskDetailsIcon.setName("jLabel_editTaskDetailsIcon"); // NOI18N
+
+        jLabel_editTaskDateIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/calendar.png"))); // NOI18N
+        jLabel_editTaskDateIcon.setName("jLabel_editTaskDateIcon"); // NOI18N
+
+        jPanel_editTaskErrorMessage.setBackground(new java.awt.Color(224, 224, 244));
+        jPanel_editTaskErrorMessage.setName("jPanel_editTaskErrorMessage"); // NOI18N
+
+        jLabel_editTaskErrorMessage.setBackground(new java.awt.Color(69, 69, 69));
+        jLabel_editTaskErrorMessage.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel_editTaskErrorMessage.setForeground(new java.awt.Color(204, 0, 102));
+        jLabel_editTaskErrorMessage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_editTaskErrorMessage.setName("jLabel_editTaskErrorMessage"); // NOI18N
+
+        javax.swing.GroupLayout jPanel_editTaskErrorMessageLayout = new javax.swing.GroupLayout(jPanel_editTaskErrorMessage);
+        jPanel_editTaskErrorMessage.setLayout(jPanel_editTaskErrorMessageLayout);
+        jPanel_editTaskErrorMessageLayout.setHorizontalGroup(
+            jPanel_editTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel_editTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_editTaskErrorMessageLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel_editTaskErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        jPanel_editTaskErrorMessageLayout.setVerticalGroup(
+            jPanel_editTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 57, Short.MAX_VALUE)
+            .addGroup(jPanel_editTaskErrorMessageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel_editTaskErrorMessageLayout.createSequentialGroup()
+                    .addComponent(jLabel_editTaskErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 21, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout jPanel_editTaskPanelLayout = new javax.swing.GroupLayout(jPanel_editTaskPanel);
+        jPanel_editTaskPanel.setLayout(jPanel_editTaskPanelLayout);
+        jPanel_editTaskPanelLayout.setHorizontalGroup(
+            jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_editTaskPanelLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField_editTaskName, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel_editTaskPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel_editTaskDetailsIcon)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane_editTask, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField_editTaskDate, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel_editTaskPanelLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel_editTaskDateIcon)
+                            .addGroup(jPanel_editTaskPanelLayout.createSequentialGroup()
+                                .addComponent(jButton_editTaskSave, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton_editTaskCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel_editTaskErrorMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_editTaskPanelLayout.setVerticalGroup(
+            jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_editTaskPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextField_editTaskName, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane_editTask, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_editTaskDetailsIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField_editTaskDate, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel_editTaskDateIcon))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel_editTaskPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_editTaskSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_editTaskCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel_editTaskErrorMessage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jDialog_editTaskLayout = new javax.swing.GroupLayout(jDialog_editTask.getContentPane());
+        jDialog_editTask.getContentPane().setLayout(jDialog_editTaskLayout);
+        jDialog_editTaskLayout.setHorizontalGroup(
+            jDialog_editTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel_editTaskPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jDialog_editTaskLayout.setVerticalGroup(
+            jDialog_editTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog_editTaskLayout.createSequentialGroup()
+                .addComponent(jPanel_editTaskPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         setBorder(null);
         setResizable(true);
         setMinimumSize(new java.awt.Dimension(44, 100));
+        setName("Form"); // NOI18N
         setOpaque(true);
-        setPreferredSize(new java.awt.Dimension(406, 1463));
 
-        jScrollPane_listView.setBorder(null);
+        jScrollPane_listView.setAutoscrolls(true);
+        jScrollPane_listView.setMinimumSize(new java.awt.Dimension(16, 16));
+        jScrollPane_listView.setName("ListView"); // NOI18N
+        jScrollPane_listView.setPreferredSize(new java.awt.Dimension(2, 2));
 
         jTable_listView.setAutoCreateRowSorter(true);
         jTable_listView.setBackground(new java.awt.Color(255, 255, 255));
@@ -424,9 +654,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
             }
         });
         jTable_listView.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-        jTable_listView.setMaximumSize(new java.awt.Dimension(2147483647, 128000000));
-        jTable_listView.setMinimumSize(new java.awt.Dimension(165, 180));
-        jTable_listView.setName(""); // NOI18N
+        jTable_listView.setMaximumSize(null);
+        jTable_listView.setName("ListView"); // NOI18N
         jTable_listView.setRowHeight(40);
         jTable_listView.setSelectionBackground(new java.awt.Color(79, 79, 79));
         jTable_listView.setSelectionForeground(new java.awt.Color(255, 255, 255));
@@ -442,22 +671,22 @@ public class ListViewForm extends javax.swing.JInternalFrame {
             jTable_listView.getColumnModel().getColumn(0).setMinWidth(0);
             jTable_listView.getColumnModel().getColumn(0).setPreferredWidth(0);
             jTable_listView.getColumnModel().getColumn(0).setMaxWidth(0);
-            jTable_listView.getColumnModel().getColumn(1).setMinWidth(80);
-            jTable_listView.getColumnModel().getColumn(1).setPreferredWidth(80);
-            jTable_listView.getColumnModel().getColumn(1).setMaxWidth(80);
+            jTable_listView.getColumnModel().getColumn(1).setMinWidth(60);
+            jTable_listView.getColumnModel().getColumn(1).setPreferredWidth(60);
+            jTable_listView.getColumnModel().getColumn(1).setMaxWidth(60);
             jTable_listView.getColumnModel().getColumn(3).setMinWidth(80);
             jTable_listView.getColumnModel().getColumn(3).setPreferredWidth(100);
             jTable_listView.getColumnModel().getColumn(3).setMaxWidth(100);
         }
 
-        getContentPane().add(jScrollPane_listView, java.awt.BorderLayout.CENTER);
-
         jPanel_addTask.setMinimumSize(new java.awt.Dimension(100, 80));
+        jPanel_addTask.setName("jPanel_addTask"); // NOI18N
         jPanel_addTask.setPreferredSize(new java.awt.Dimension(406, 80));
 
         jButton_addTask.setBackground(new java.awt.Color(75, 114, 153));
         jButton_addTask.setForeground(new java.awt.Color(255, 255, 255));
         jButton_addTask.setText("Add Task");
+        jButton_addTask.setName("jButton_addTask"); // NOI18N
         jButton_addTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_addTaskActionPerformed(evt);
@@ -468,6 +697,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jButton_deleteSelectedTask.setForeground(new java.awt.Color(255, 255, 255));
         jButton_deleteSelectedTask.setText("Delete Selected");
         jButton_deleteSelectedTask.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton_deleteSelectedTask.setName("jButton_deleteSelectedTask"); // NOI18N
         jButton_deleteSelectedTask.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_deleteSelectedTaskActionPerformed(evt);
@@ -479,62 +709,71 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jPanel_addTaskLayout.setHorizontalGroup(
             jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_addTaskLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addContainerGap()
+                .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel_addTaskLayout.setVerticalGroup(
             jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_addTaskLayout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addGroup(jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+            .addGroup(jPanel_addTaskLayout.createSequentialGroup()
+                .addGroup(jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel_addTask, java.awt.BorderLayout.PAGE_END);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1044, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel_addTask, javax.swing.GroupLayout.DEFAULT_SIZE, 1032, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane_listView, javax.swing.GroupLayout.DEFAULT_SIZE, 1032, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 547, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(496, Short.MAX_VALUE)
+                    .addComponent(jPanel_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane_listView, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
+                    .addGap(89, 89, 89)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    /**
-     * Displays a modal dialog box on screen for user to add a new task
-     * @param evt 
-     */
-    private void jButton_addTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskActionPerformed
-        // Reset dialog fields
-        jTextField_addTaskName.setText("Enter task name");
-        jTextArea_addTaskDetails.setText("Add task details");
-        jTextField_addTaskDate.setText("dd-mm-yyyy");
-        jLabel_errorMessage.setText("");
-        jTextField_addTaskName.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        jTextArea_addTaskDetails.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        jTextField_addTaskDate.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        // Display the dialog box in the centre of the parent form
-        jDialog_addTask.setLocationRelativeTo(this);
-        jDialog_addTask.setVisible(true);
-    }//GEN-LAST:event_jButton_addTaskActionPerformed
-
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
         if(App.controller.addTask(jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
              // Re-populates data in the jTable to reflect changes
-            App.controller.populateTableData(jTable_listView);
+            App.controller.updateTableData(jTable_listView);
             jDialog_addTask.setVisible(false);
         }
         else {
-            jLabel_errorMessage.setText("Unable to add task. Contact your system administrator for assistance.");
-        }
-        
+            jLabel_addTaskErrorMessage.setText("Unable to add task. Contact your system administrator for assistance.");
+        }  
     }//GEN-LAST:event_jButton_addTaskSaveActionPerformed
 
     private void jTextField_addTaskNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskNameFocusGained
         if(jTextField_addTaskName.getText().equals("Enter task name") || jTextField_addTaskName.getText().equals("*Task name is required")) {
             jTextField_addTaskName.setText("");
             jTextField_addTaskName.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-            jLabel_errorMessage.setText("");
+            jLabel_addTaskErrorMessage.setText("");
         }
     }//GEN-LAST:event_jTextField_addTaskNameFocusGained
 
@@ -547,7 +786,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     private void jTextArea_addTaskDetailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_addTaskDetailsFocusGained
         if(jTextArea_addTaskDetails.getText().equals("Add task details")) {
         jTextArea_addTaskDetails.setText("");
-        jLabel_errorMessage.setText("");
+        jLabel_addTaskErrorMessage.setText("");
         }
     }//GEN-LAST:event_jTextArea_addTaskDetailsFocusGained
 
@@ -563,14 +802,13 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTextField_addTaskDate.getText().equals("*Must be: dd-mm-yyyy")) {
             jTextField_addTaskDate.setText("");
             jTextField_addTaskDate.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-            jLabel_errorMessage.setText("");
+            jLabel_addTaskErrorMessage.setText("");
         }
     }//GEN-LAST:event_jTextField_addTaskDateFocusGained
 
     private void jTextField_addTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskDateFocusLost
         if(jTextField_addTaskDate.getText().equals("")) {
             jTextField_addTaskDate.setText("dd-mm-yyyy");
-            
         }
     }//GEN-LAST:event_jTextField_addTaskDateFocusLost
 
@@ -579,26 +817,23 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_addTaskCancelActionPerformed
 
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
-        App.controller.editTaskStatus(jTable_listView);
         jDialog_viewTask.setVisible(false);
-        this.setVisible(true);
-        App.controller.populateTableData(jTable_listView);
+        App.controller.editTaskStatus(jTable_listView);
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
-
+    
     private void jButton_editTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskActionPerformed
-       // TODO - Add code for editing a task
-        
+        // Hides the viewTask dialog
+        jDialog_viewTask.setVisible(false);
+        // Populates the editTask dialog fields based on the taskNumber selected for editing
+        String[] taskComponents = App.controller.getTask();
+        jTextField_editTaskName.setText(taskComponents[1]);
+        jTextArea_editTaskDetails.setText(taskComponents[2]);
+        jTextField_editTaskDate.setText(taskComponents[3]);
+        // Sets dialog position in centre of screen 
+        jDialog_editTask.setLocationRelativeTo(this.jScrollPane_listView);
+        // Displays the editTask dialog
+        jDialog_editTask.setVisible(true);
     }//GEN-LAST:event_jButton_editTaskActionPerformed
-
-    private void jButton_deleteSelectedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_deleteSelectedTaskActionPerformed
-        int selectedRow = jTable_listView.getSelectedRow();
-        int selectedTaskNum = (int)jTable_listView.getValueAt(selectedRow, 0);
-        if(App.controller.deleteTask(jTable_listView, selectedRow, selectedTaskNum)) {
-            System.out.println("Task " + selectedTaskNum + " at row " + selectedRow + " has been deleted");
-        } 
-        jButton_deleteSelectedTask.setVisible(false);
-               
-    }//GEN-LAST:event_jButton_deleteSelectedTaskActionPerformed
 
     private void jTable_listViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_listViewMouseClicked
         if(jTable_listView.getSelectedRow() != -1) {
@@ -606,32 +841,130 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTable_listViewMouseClicked
 
+    private void jButton_editTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskSaveActionPerformed
+        if(App.controller.editTask(jTable_listView, jTextField_editTaskName, jTextArea_editTaskDetails, jTextField_editTaskDate)) {
+             // Re-populates data in the jTable to reflect changes
+            App.controller.populateTableData(jTable_listView);
+            jDialog_editTask.setVisible(false);
+        }
+        else {
+            jLabel_editTaskErrorMessage.setText("Unable to edit task. Contact your system administrator for assistance.");
+        }  
+    }//GEN-LAST:event_jButton_editTaskSaveActionPerformed
+
+    private void jTextField_editTaskNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusGained
+        if(jTextField_editTaskName.getText().equals("Enter task name") || jTextField_editTaskName.getText().equals("*Task name is required")) {
+            jTextField_editTaskName.setText("");
+            jTextField_editTaskName.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            jLabel_editTaskErrorMessage.setText("");
+        }
+    }//GEN-LAST:event_jTextField_editTaskNameFocusGained
+
+    private void jTextField_editTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusLost
+        if(jTextField_editTaskName.getText().equals("")) {
+            jTextField_editTaskName.setText("Enter task name");
+        }
+    }//GEN-LAST:event_jTextField_editTaskNameFocusLost
+
+    private void jTextField_editTaskDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusGained
+        if(jTextField_editTaskDate.getText().equals("dd-mm-yyyy") || 
+        jTextField_editTaskDate.getText().equals("*Date required") || 
+        jTextField_editTaskDate.getText().equals("*Must be: dd-mm-yyyy")) {
+            jTextField_editTaskDate.setText("");
+            jTextField_editTaskDate.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+            jLabel_editTaskErrorMessage.setText("");
+        }
+    }//GEN-LAST:event_jTextField_editTaskDateFocusGained
+
+    private void jTextField_editTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusLost
+        if(jTextField_editTaskDate.getText().equals("")) {
+            jTextField_editTaskDate.setText("dd-mm-yyyy");
+        }
+    }//GEN-LAST:event_jTextField_editTaskDateFocusLost
+
+    private void jTextArea_editTaskDetailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusGained
+        if(jTextArea_editTaskDetails.getText().equals("Add task details")) {
+        jTextArea_editTaskDetails.setText("");
+        jLabel_editTaskErrorMessage.setText("");
+        }
+    }//GEN-LAST:event_jTextArea_editTaskDetailsFocusGained
+
+    private void jTextArea_editTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusLost
+        if(jTextArea_editTaskDetails.getText().equals("")) {
+        jTextArea_editTaskDetails.setText("Add task details");
+        }
+    }//GEN-LAST:event_jTextArea_editTaskDetailsFocusLost
+
+    private void jButton_editTaskCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskCancelActionPerformed
+        jDialog_editTask.setVisible(false);
+    }//GEN-LAST:event_jButton_editTaskCancelActionPerformed
+
+    private void jButton_deleteSelectedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_deleteSelectedTaskActionPerformed
+        int selectedRow = jTable_listView.getSelectedRow();
+        int selectedTaskNum = (int)jTable_listView.getValueAt(selectedRow, 0);
+        if(App.controller.deleteTask(jTable_listView, selectedRow, selectedTaskNum)) {
+            System.out.println("Task " + selectedTaskNum + " at row " + selectedRow + " has been deleted");
+        }
+        jButton_deleteSelectedTask.setVisible(false);
+
+    }//GEN-LAST:event_jButton_deleteSelectedTaskActionPerformed
+
+    /**
+     * Displays a modal dialog box on screen for user to add a new task
+     * @param evt 
+     */
+    private void jButton_addTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskActionPerformed
+        // Reset dialog fields
+        jTextField_addTaskName.setText("Enter task name");
+        jTextArea_addTaskDetails.setText("Add task details");
+        jTextField_addTaskDate.setText("dd-mm-yyyy");
+        jLabel_addTaskErrorMessage.setText("");
+        jTextField_addTaskName.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        jTextArea_addTaskDetails.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        jTextField_addTaskDate.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+        // Display the dialog box in the centre of the parent form
+        jDialog_addTask.setLocationRelativeTo(this);
+        jDialog_addTask.setVisible(true);
+    }//GEN-LAST:event_jButton_addTaskActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_addTask;
     private javax.swing.JButton jButton_addTaskCancel;
     private javax.swing.JButton jButton_addTaskSave;
     private javax.swing.JButton jButton_deleteSelectedTask;
     private javax.swing.JButton jButton_editTask;
+    private javax.swing.JButton jButton_editTaskCancel;
+    private javax.swing.JButton jButton_editTaskSave;
     private javax.swing.JButton jButton_viewTaskMarkCompleted;
     private javax.swing.JDialog jDialog_addTask;
+    private javax.swing.JDialog jDialog_editTask;
     private javax.swing.JDialog jDialog_viewTask;
     private javax.swing.JLabel jLabel_addTaskDateIcon;
     private javax.swing.JLabel jLabel_addTaskDetailsIcon;
-    private javax.swing.JLabel jLabel_errorMessage;
+    private javax.swing.JLabel jLabel_addTaskErrorMessage;
+    private javax.swing.JLabel jLabel_editTaskDateIcon;
+    private javax.swing.JLabel jLabel_editTaskDetailsIcon;
+    private javax.swing.JLabel jLabel_editTaskErrorMessage;
     private javax.swing.JLabel jLabel_viewTaskDateIcon;
     private javax.swing.JLabel jLabel_viewTaskDetailsIcon;
     private javax.swing.JPanel jPanel_addTask;
+    private javax.swing.JPanel jPanel_addTaskErrorMessage;
     private javax.swing.JPanel jPanel_addTaskPanel;
-    private javax.swing.JPanel jPanel_errorMessage;
+    private javax.swing.JPanel jPanel_editTaskErrorMessage;
+    private javax.swing.JPanel jPanel_editTaskPanel;
     private javax.swing.JPanel jPanel_viewTaskPanel;
     private javax.swing.JScrollPane jScrollPane_addTask;
+    private javax.swing.JScrollPane jScrollPane_editTask;
     private javax.swing.JScrollPane jScrollPane_listView;
     private javax.swing.JScrollPane jScrollPane_viewTask;
     private javax.swing.JTable jTable_listView;
     private javax.swing.JTextArea jTextArea_addTaskDetails;
+    private javax.swing.JTextArea jTextArea_editTaskDetails;
     private javax.swing.JTextArea jTextArea_viewTaskDetails;
     private javax.swing.JTextField jTextField_addTaskDate;
     private javax.swing.JTextField jTextField_addTaskName;
+    private javax.swing.JTextField jTextField_editTaskDate;
+    private javax.swing.JTextField jTextField_editTaskName;
     private javax.swing.JTextField jTextField_viewTaskDate;
     private javax.swing.JTextField jTextField_viewTaskName;
     // End of variables declaration//GEN-END:variables
