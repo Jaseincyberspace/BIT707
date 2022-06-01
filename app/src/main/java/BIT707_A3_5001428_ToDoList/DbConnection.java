@@ -34,9 +34,41 @@ public class DbConnection {
      * @param taskDate
      * @return 
      */
+    
+    public String getLargestTaskNumber() {
+        String sql = "SELECT MAX(taskNumber) from TASK;";
+        Statement statement = null;
+        ResultSet resultSet = null;
+        String maxID = "";
+        
+        try {
+            // Execute SQLite statement
+            statement = DbConnection.DB.createStatement();
+            resultSet = statement.executeQuery(sql);
+            if(resultSet.next()) {
+                maxID = resultSet.getString(1);
+            }
+        }
+        catch(SQLException e) {
+            System.out.println("Exception: " + e);
+        }
+        return maxID;
+    }
+    
     public boolean createTask(String taskNumber, String taskName, String taskDescription, String taskDate) {
         String sql = "INSERT INTO Task(taskNumber, taskName, taskDescription, dueDate, status) VALUES (" 
                 + "\"" + taskNumber + "\",\"" + taskName + "\",\"" + taskDescription + "\",\"" + taskDate + "\",\"" + "false\");";
+        return insertUpdateOrDelete(sql); 
+    }
+    
+    public boolean updateTask(String taskNumber, String taskName, String taskDescription, String taskDate, String taskStatus) {
+        String sql = "UPDATE Task SET taskName = " + "\"" + taskName + "\", taskDescription = " + "\"" + taskDescription + "\", dueDate = "
+            + "\"" + taskDate + "\", status = " + "\"" + taskStatus +  "\"" + " WHERE taskNumber = " + "\"" + taskNumber + "\";";
+        return insertUpdateOrDelete(sql); 
+    }
+        
+    public boolean updateTask(String taskNumber, String taskStatus) {
+        String sql = "UPDATE Task SET status = \"" + taskStatus + "\" WHERE taskNumber = \"" + taskNumber + "\";";
         return insertUpdateOrDelete(sql); 
     }
         
@@ -79,7 +111,7 @@ public class DbConnection {
      * @return 
      */
     public boolean updateTaskStatus (String taskNumber, String status) {
-        String sql = "UPDATE Task SET status = " + "\"" + status + "\"" + "WHERE taskNumber = " + "\"" + taskNumber + "\";";
+        String sql = "UPDATE Task SET status = " + "\"" + status + "\"" + " WHERE taskNumber = " + "\"" + taskNumber + "\";";
         return insertUpdateOrDelete(sql);
     }
     
