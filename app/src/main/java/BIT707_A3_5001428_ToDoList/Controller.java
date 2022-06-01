@@ -5,15 +5,17 @@
 package BIT707_A3_5001428_ToDoList;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
@@ -33,8 +35,16 @@ import javax.swing.table.TableRowSorter;
 public class Controller {
     final private DbConnection dbConnection;
     private static ArrayList<Task> taskList;
+    private static ArrayList<Task> mondayList;
+    private static ArrayList<Task> tuesdayList;
+    private static ArrayList<Task> wednesdayList;
+    private static ArrayList<Task> thursdayList;
+    private static ArrayList<Task> fridayList;
+    private static ArrayList<Task> saturdayList;
+    private static ArrayList<Task> sundayList;
     private int selectedRow;
     private int selectedTaskNumber;
+    private LocalDate[] selectedWeek;
     // Views
     public static MainForm mainForm = null;
     public static ListViewForm listViewForm = null;
@@ -66,9 +76,7 @@ public class Controller {
         mainForm.setLocationRelativeTo(null);
         mainForm.pack();
         mainForm.setVisible(true);
-        // Displays ListView form inside MainForm
-        listViewForm = new ListViewForm();
-        listViewForm.setVisible(true);
+ 
     }
     
     /**
@@ -144,8 +152,7 @@ public class Controller {
      * @param tasks
      * @param jTable 
      */
-     public void populateTableData(JTable jTable) {  
-        String tableName = jTable.getName();
+     public void populateTableData(JTable jTable) {
         DefaultTableModel tableModel = (DefaultTableModel)jTable.getModel();
         // Removes any existing row data first
         tableModel.setRowCount(0);
@@ -154,114 +161,209 @@ public class Controller {
         // Sets table listener to keep track of checkbox events
         addTableModelListener(tableModel);     
         
-        // Adds row data from list of Task objects
-        for (int i = 0; i < taskList.size(); i++) {
-            // Breaks down Task object into its attributes (one attribute goes into each column)
-            int taskNumber = taskList.get(i).getTaskNumber();
-            Boolean taskStatus = taskList.get(i).isTaskStatus();
-            String taskName = String.valueOf(taskList.get(i).getTaskName());
-            LocalDate taskDate = taskList.get(i).getTaskDate();
-            // Formats date for NZ
-            // String taskDate = formatDate((tasks.get(i).getTaskDate()));
-            // Sets row data
-            Object[] rowData = {
-                taskNumber,
-                taskStatus, 
-                taskName,
-                taskDate
-            };
-            tableModel.addRow(rowData);
+        String tableName = jTable.getName();
+        if(tableName.equals("ListView")) {
+            // Adds row data from list of Task objects
+            for (int i = 0; i < taskList.size(); i++) {
+                // Breaks down Task object into its attributes (one attribute goes into each column)
+                int taskNumber = taskList.get(i).getTaskNumber();
+                Boolean taskStatus = taskList.get(i).isTaskStatus();
+                String taskName = String.valueOf(taskList.get(i).getTaskName());
+                LocalDate taskDate = taskList.get(i).getTaskDate();
+                // Formats date for NZ
+                // String taskDate = formatDate((tasks.get(i).getTaskDate()));
+                // Sets row data
+                Object[] rowData = {
+                    taskNumber,
+                    taskStatus, 
+                    taskName,
+                    taskDate
+                };
+                tableModel.addRow(rowData);
+            }
+            // Displays dates as dd-mm-yyyy        
+            renderTableDateColumn(jTable);
+            // Sorts table by date column but only when calendarView is not being displayed
+            sortTable(jTable);
         }
-        // Displays dates as dd-mm-yyyy        
-        renderTableDateColumn(jTable);
-        // Sorts table by date column
-        sortTable(jTable);
-        // Notifies of changes to the data model
-        tableModel.fireTableDataChanged();
-    }
-          
-    public void updateTableData(JTable jTable) {
-        DefaultTableModel tableModel = (DefaultTableModel)jTable.getModel();
-        // Removes any existing row data first
-        tableModel.setRowCount(0);
         
-        // Adds row data from list of Task objects
-        for (int i = 0; i < taskList.size(); i++) {
-            // Breaks down Task object into its attributes (one attribute goes into each column)
-            int taskNumber = taskList.get(i).getTaskNumber();
-            Boolean taskStatus = taskList.get(i).isTaskStatus();
-            String taskName = String.valueOf(taskList.get(i).getTaskName());
-            LocalDate taskDate = taskList.get(i).getTaskDate();
-            // Formats date for NZ
-            // String taskDate = formatDate((tasks.get(i).getTaskDate()));
-            // Sets row data
-            Object[] rowData = {
-                taskNumber,
-                taskStatus, 
-                taskName,
-                taskDate
-            };
-            tableModel.addRow(rowData);
-        }
-        // Displays dates as dd-mm-yyyy        
-        renderTableDateColumn(jTable);
-        // Sorts table by date column
-        sortTable(jTable);
+        // Separates data into days of the week for the selected week 
+        else {
+            mondayList = new ArrayList<>();
+            tuesdayList = new ArrayList<>();
+            wednesdayList = new ArrayList<>();
+            thursdayList = new ArrayList<>();
+            fridayList = new ArrayList<>();
+            saturdayList = new ArrayList<>();
+            sundayList = new ArrayList<>();
+            
+            // These "tasks" are used as day of the week headers in the CalendarView table. HTML sytling is added to make them bold.
+            LocalDate date = LocalDate.of(1582,10,15);
+            Task monday = new Task(-1, "<html><b>Monday</b></html>", "", date, false);
+            Task tuesday = new Task(-1, "<html><b>Tuesday</b></html>", "", date, false);
+            Task wednesday = new Task(-1, "<html><b>Wednesday</b></html>", "", date, false);
+            Task thursday = new Task(-1, "<html><b>Thursday</b></html>", "", date, false);
+            Task friday = new Task(-1, "<html><b>Friday</b></html>", "", date, false);
+            Task saturday = new Task(-1, "<html><b>Saturday</b></html>", "", date, false);
+            Task sunday = new Task(-1, "<html><b>Sunday</b></html>", "", date, false);
+            
+            mondayList.add(monday);
+            tuesdayList.add(tuesday);
+            wednesdayList.add(wednesday);
+            thursdayList.add(thursday);
+            fridayList.add(friday);
+            saturdayList.add(saturday);
+            sundayList.add(sunday);
+            
+            for(Task task : taskList) {
+                LocalDate taskDate = task.getTaskDate();
+                int dayOfWeek = taskDate.getDayOfWeek().getValue();
+                
+                if(taskDate.isEqual(selectedWeek[0]) || taskDate.isAfter(selectedWeek[0])) {
+                    if(taskDate.isBefore(selectedWeek[1]) || taskDate.isEqual(selectedWeek[1])) {
+                        switch (dayOfWeek) {
+                            case 1:
+                                mondayList.add(task);
+                                break;
+                            case 2:
+                                tuesdayList.add(task);
+                                break;
+                            case 3:
+                                wednesdayList.add(task);
+                                break;
+                            case 4:
+                                thursdayList.add(task);
+                                break;
+                            case 5:
+                                fridayList.add(task);
+                                break;
+                            case 6:
+                                saturdayList.add(task);
+                                break;
+                            case 7:
+                                sundayList.add(task);
+                                break;
+                            default:
+                                System.out.println("Unable to determine which day of the week task number " + task.getTaskNumber()
+                                    + "falls on with date: " + String.valueOf(task.getTaskDate()));
+                                break;
+                        }   
+                    }
+                }
+            }
+            for(Task task : mondayList) {
+                generateRowData(task, tableModel);
+            } 
+            for(Task task : tuesdayList) {
+                generateRowData(task, tableModel);
+            } 
+            for(Task task : wednesdayList) {
+                generateRowData(task, tableModel);
+            } 
+            for(Task task : thursdayList) {
+                generateRowData(task, tableModel);
+            } 
+            for(Task task : fridayList) {
+                generateRowData(task, tableModel);
+            } 
+            for(Task task : saturdayList) {
+                generateRowData(task, tableModel);
+            } 
+            for(Task task : sundayList) {
+                generateRowData(task, tableModel);
+            } 
+            // Displays dates as dd-mm-yyyy        
+            renderTableDateColumn(jTable);
+        }              
         // Notifies of changes to the data model
         tableModel.fireTableDataChanged();
     }
      
-     public void addTableModelListener(DefaultTableModel tableModel) {
-         tableModel.addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
+    public void generateRowData(Task task, DefaultTableModel tableModel) {
+        // Breaks down Task object into its attributes (one attribute goes into each column)
+          
+        int taskNumber = task.getTaskNumber();
+        Boolean taskStatus = task.isTaskStatus();
+        String taskName = task.getTaskName();
+        LocalDate taskDate = task.getTaskDate();
+        // Formats date for NZ
+        // String taskDate = formatDate((tasks.get(i).getTaskDate()));
+        // Sets row data
+        Object[] rowData = {
+            taskNumber,
+            taskStatus, 
+            taskName,
+            taskDate
+        };
+        tableModel.addRow(rowData);
+    }
+               
+    public void addTableModelListener(DefaultTableModel tableModel) {
+        tableModel.addTableModelListener(new TableModelListener() {
+           @Override
+           public void tableChanged(TableModelEvent e) {
                 int row = e.getFirstRow();
                 int column = e.getColumn();
                 TableModel tableModel = (TableModel)e.getSource();
                 if(column >= 0) {
                     Object data = tableModel.getValueAt(row, column);
                     if(data instanceof Boolean) {
-                        String taskNumber = String.valueOf(tableModel.getValueAt(row, 0));
+                        int taskNumber = (int)tableModel.getValueAt(row, 0);
+                        boolean taskStatus = (boolean)tableModel.getValueAt(row, 1);
                         String taskName = String.valueOf(tableModel.getValueAt(row, 2));
-                        String taskDate = String.valueOf(tableModel.getValueAt(row, 3));
-                        String taskStatus = String.valueOf(tableModel.getValueAt(row, 1));
-                                                 
-                        // Updates database 
-                        dbConnection.updateTask(taskNumber, taskStatus);
-                        // Updates taskList
-                        for(int i = 0; i < taskList.size(); i++) {
-                            if(taskList.get(i).getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
-                                taskList.get(i).setTaskStatus((Boolean)tableModel.getValueAt(row, 1));
-                            }
-                        }
+                        LocalDate taskDate = (LocalDate)tableModel.getValueAt(row, 3);
                         
-                        // Print statement is for testing and debugging only
-                        System.out.println("bool changed at row: " + row + " column: " + column);
+                        // Excludes Day of Week headers which have taskNumber set as -1
+                        if(taskNumber != -1) {
+                            addOrRemoveStrikethrough(tableModel, row, taskNumber, taskName, taskDate, taskStatus);
+                            // Print statement is for testing and debugging only
+                            System.out.println("bool changed at row: " + row + " column: " + column);
+                        }    
                     }
                     else if(data instanceof String) {
                         String taskNumber = String.valueOf(tableModel.getValueAt(row, 0));
                         String taskName = String.valueOf(tableModel.getValueAt(row, 2));
                         String taskDate = String.valueOf(tableModel.getValueAt(row, 3));
                         String taskStatus = String.valueOf(tableModel.getValueAt(row, 1));
-                        
+
                         // Updates database 
                         dbConnection.updateTask(taskNumber, taskStatus);
                         // Updates taskList
                         for(int i = 0; i < taskList.size(); i++) {
                             if(taskList.get(i).getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
                                 taskList.get(i).setTaskName((String)tableModel.getValueAt(row, 2));
-                                taskList.get(i).setTaskDescription((String)tableModel.getValueAt(row, 3));
+                                taskList.get(i).setTaskDate((LocalDate)tableModel.getValueAt(row, 3));
                             }
                         }
-                        
                         // Print statement is for testing and debugging only
                         System.out.println("strings changed at row: " + row);
                     }   
                 }   
             }
         });
-     }
-             
+    }
+    
+    public void addOrRemoveStrikethrough(TableModel tableModel, int row, int taskNumber, String taskName, LocalDate taskDate, boolean taskStatus) {
+        // Updates database 
+        dbConnection.updateTask(String.valueOf(taskNumber), String.valueOf(taskStatus));
+        // Updates taskList
+        for(int i = 0; i < taskList.size(); i++) {
+             if(taskList.get(i).getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
+                taskList.get(i).setTaskStatus((Boolean)tableModel.getValueAt(row, 1));
+             }
+        }
+        // Marks table row as completed (adds a strikethrough)
+        if(taskStatus) {
+            tableModel.setValueAt("<html><strike>" + taskName + "</strike></html>", row, 2);
+        }
+        else {
+            // Removes strikethrough if checkbox changes from checked to unchecked
+            String RegExMatchHTMLTags = "<[^>]*>";
+            taskName = taskName.replaceAll(RegExMatchHTMLTags, "");
+            tableModel.setValueAt(taskName, row, 2);  
+        } 
+    }
+                 
     /**
      * Renders the date column of jTable to display dates formatted for NZ (dd-MM-yyyy)
      * @param jTable 
@@ -278,7 +380,7 @@ public class Controller {
         };
         jTable.getColumnModel().getColumn(3).setCellRenderer(tableCellRenderer);
     }
-       
+         
     /**
      * Sets default sort order of jTable data based on date column
      * @param jTable 
@@ -333,17 +435,20 @@ public class Controller {
                     // Saves row and task number variables for use later (otherwise they are lost when the dialog box is displayed)
                     selectedRow = jTable.getSelectedRow();
                     selectedTaskNumber = (int)jTable.getValueAt(selectedRow, 0);        
-                    // Gets selected task from database
-                    ArrayList<String> taskComponents = dbConnection.readTask(String.valueOf(selectedTaskNumber));
-                    // Reformats date to dd-MM-yyyy
-                    taskComponents.set(3, formatDate(taskComponents.get(3)));
-                    if(jTable.getName().equals("ListView")) {
-                        // Displays task details in dialog box
-                        listViewForm.displayTask(taskComponents);
-                    }
-                    else if(jTable.getName().equals("CalendarView")) {
-                        // Displays task details in dialog box
-                        calendarViewForm.displayTask(taskComponents);
+                     // Database query is only sent if taskNumber is not -1. Calendar view's DayOfWeek headings all have taskNumber -1 but they do not exist in the database
+                    if(selectedTaskNumber != -1) {
+                        // Gets selected task from database
+                        ArrayList<String> taskComponents = dbConnection.readTask(String.valueOf(selectedTaskNumber));
+                        // Reformats date to dd-MM-yyyy
+                        taskComponents.set(3, formatDate(taskComponents.get(3)));
+                        if(jTable.getName().equals("ListView")) {
+                            // Displays task details in dialog box
+                            listViewForm.displayTask(taskComponents);
+                        }
+                        else if(jTable.getName().equals("CalendarView")) {
+                            // Displays task details in dialog box
+                            calendarViewForm.displayTask(taskComponents);
+                        }
                     }
                 }
             }
@@ -478,7 +583,7 @@ public class Controller {
         int taskListIndex = -1;
         boolean validInput = false;
         boolean methodSuccessful = false;
-        
+                      
         // Sets taskID
         taskNumber = String.valueOf(selectedTaskNumber);   
         
@@ -526,7 +631,7 @@ public class Controller {
             }
         }
                         
-        // If input is valid a record is added to the database 
+        // If input is valid the selected record is updated in the database 
         if(validInput) {
             Boolean taskUpdatedInDB = dbConnection.updateTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
             // If the database update is successful the task is added to the taskList
@@ -540,7 +645,7 @@ public class Controller {
                             methodSuccessful = true;
                         }
                     }
-                updateTableData(jTable);
+                populateTableData(jTable);
                 }
                 else {
                     System.out.println("Error: Unable to update task in controller's task list");
@@ -566,12 +671,14 @@ public class Controller {
                     methodSuccessful = true;
                 }
             }
+            DefaultTableModel tableModel = (DefaultTableModel)jTable.getModel();
+            tableModel.fireTableRowsDeleted(selectedRow, selectedRow);
             populateTableData(jTable);
         }
         return methodSuccessful;
     }
     
-    public String[] getTask() {
+    public String[] getSelectedTask() {
         String taskNumber = String.valueOf(selectedTaskNumber);
         String taskName = "";
         String taskDescription = "";
@@ -590,38 +697,33 @@ public class Controller {
         return taskComponents;
     }
     
-    public boolean editTaskStatus(JTable jTable) {
-        boolean methodSuccessful = false;
-        // Finds the selected task in the taskList
-        for(int i = 0; i < taskList.size(); i++) {
-            if(taskList.get(i).getTaskNumber() == selectedTaskNumber) {
-                                               
-                // Finds the current status of the specified task
-                boolean status = taskList.get(i).isTaskStatus();
-                String updatedStatus = String.valueOf(!status);
-                // Updates the database to change the status to the opposite of what it currently is
-                 if(dbConnection.updateTaskStatus(String.valueOf(selectedTaskNumber), updatedStatus)) {
-                    // Updates the taskList
-                    taskList.get(i).setTaskStatus(!status);
-                    // Repopulates the table data
-                    populateTableData(jTable);
-                    methodSuccessful = true;
-     
-                    // Print to console for debugging purposes
-                    System.out.println(selectedTaskNumber + " was found at index " + selectedRow);  
-                    System.out.println(taskList.get(i).getTaskNumber() + " " + taskList.get(i).getTaskName() + " " + taskList.get(i).getTaskDescription() + " " + taskList.get(i).isTaskStatus());
-                };
-            }
-            else {
-                System.out.println("Unable to update task status. Task number " + selectedTaskNumber + " not found in task list");
-            }
+    /**
+     * Initially calculates the start and end dates of the current week (Monday - Sunday). 
+     * If called again after being initialized it applies an offset of plus or minus one week from the last selected week based on user input
+     * @return 
+     */    
+    public void setSelectedWeek(int plusOrMinus1Week) {        
+        if(selectedWeek == null || plusOrMinus1Week == 0) {
+            selectedWeek = new LocalDate[2];
+            selectedWeek[0] = LocalDate.now().plusWeeks(plusOrMinus1Week).with(DayOfWeek.MONDAY);
+            selectedWeek[1] = LocalDate.now().plusWeeks(plusOrMinus1Week).with(DayOfWeek.SUNDAY);
         }
-        // Repopulates the table data
-        populateTableData(jTable);
-        listViewForm.dispose();
-    return methodSuccessful;
+        else {
+            selectedWeek[0] = selectedWeek[0].plusWeeks(plusOrMinus1Week).with(DayOfWeek.MONDAY);
+            selectedWeek[1] = selectedWeek[1].plusWeeks(plusOrMinus1Week).with(DayOfWeek.SUNDAY);
+        }
+        
     }
     
+    /**
+     * Returns a string containing the start and end dates of the selected week formatted for NZ (dd-MM-yyyy)
+     * @return 
+     */
+    public String getSelectedWeek() {
+        String _selectedWeek = formatDate(selectedWeek[0]) + "  to  " + formatDate(selectedWeek[1]);
+        return _selectedWeek;
+    }
+        
     /**
      * Parses String data into types required for task object. Returns -1 if successful, 
      * otherwise returns an int relative to the argument index of the parameter that could not be parsed
