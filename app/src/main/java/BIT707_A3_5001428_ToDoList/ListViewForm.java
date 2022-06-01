@@ -7,7 +7,6 @@ package BIT707_A3_5001428_ToDoList;
 
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -296,8 +295,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jDialog_viewTask.setIconImages(null);
         jDialog_viewTask.setLocation(new java.awt.Point(0, 0));
         jDialog_viewTask.setMinimumSize(new java.awt.Dimension(480, 435));
-        jDialog_viewTask.setModalExclusionType(null);
-        jDialog_viewTask.setModalityType(null);
+        jDialog_viewTask.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        jDialog_viewTask.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         jDialog_viewTask.setName(""); // NOI18N
         jDialog_viewTask.setResizable(false);
 
@@ -679,6 +678,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
             jTable_listView.getColumnModel().getColumn(3).setMaxWidth(100);
         }
 
+        getContentPane().add(jScrollPane_listView, java.awt.BorderLayout.CENTER);
+
         jPanel_addTask.setMinimumSize(new java.awt.Dimension(100, 80));
         jPanel_addTask.setName("jPanel_addTask"); // NOI18N
         jPanel_addTask.setPreferredSize(new java.awt.Dimension(406, 80));
@@ -709,59 +710,34 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jPanel_addTaskLayout.setHorizontalGroup(
             jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_addTaskLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(50, 50, 50)
                 .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 514, Short.MAX_VALUE)
                 .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(50, 50, 50))
         );
         jPanel_addTaskLayout.setVerticalGroup(
             jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_addTaskLayout.createSequentialGroup()
-                .addGroup(jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_addTaskLayout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addGroup(jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1044, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel_addTask, javax.swing.GroupLayout.DEFAULT_SIZE, 1032, Short.MAX_VALUE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane_listView, javax.swing.GroupLayout.DEFAULT_SIZE, 1032, Short.MAX_VALUE)
-                    .addContainerGap()))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(496, Short.MAX_VALUE)
-                    .addComponent(jPanel_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane_listView, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
-                    .addGap(89, 89, 89)))
-        );
+        getContentPane().add(jPanel_addTask, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
         if(App.controller.addTask(jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
-             // Re-populates data in the jTable to reflect changes
-            App.controller.updateTableData(jTable_listView);
+            // Re-populates data in the jTable to reflect changes
+            App.controller.populateTableData(jTable_listView);
+            // Updates table model
+            DefaultTableModel tableModel = (DefaultTableModel)jTable_listView.getModel();
+            tableModel.fireTableDataChanged();
             jDialog_addTask.setVisible(false);
         }
         else {
@@ -817,16 +793,22 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_addTaskCancelActionPerformed
 
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
-        jDialog_viewTask.setVisible(false);
-        App.controller.editTaskStatus(jTable_listView);
+        jDialog_viewTask.setVisible(false);        
+        // Updates table model
+        String[] task = App.controller.getSelectedTask();
+        boolean status = Boolean.parseBoolean(task[4]);
+        jTable_listView.getModel().setValueAt(!status, jTable_listView.getSelectedRow(), 1);
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
     
     private void jButton_editTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskActionPerformed
         // Hides the viewTask dialog
         jDialog_viewTask.setVisible(false);
         // Populates the editTask dialog fields based on the taskNumber selected for editing
-        String[] taskComponents = App.controller.getTask();
-        jTextField_editTaskName.setText(taskComponents[1]);
+        String[] taskComponents = App.controller.getSelectedTask();
+        // Removes any HTML tags from taskName
+        String RegExMatchHTMLTags = "<[^>]*>";
+        String taskName = taskComponents[1].replaceAll(RegExMatchHTMLTags, "");
+        jTextField_editTaskName.setText(taskName);
         jTextArea_editTaskDetails.setText(taskComponents[2]);
         jTextField_editTaskDate.setText(taskComponents[3]);
         // Sets dialog position in centre of screen 
@@ -842,8 +824,9 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable_listViewMouseClicked
 
     private void jButton_editTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskSaveActionPerformed
-        if(App.controller.editTask(jTable_listView, jTextField_editTaskName, jTextArea_editTaskDetails, jTextField_editTaskDate)) {
-             // Re-populates data in the jTable to reflect changes
+        boolean dbUpdated = App.controller.editTask(jTable_listView, jTextField_editTaskName, jTextArea_editTaskDetails, jTextField_editTaskDate);
+        if(dbUpdated) {
+            // Re-populates data in the jTable to reflect changes
             App.controller.populateTableData(jTable_listView);
             jDialog_editTask.setVisible(false);
         }
