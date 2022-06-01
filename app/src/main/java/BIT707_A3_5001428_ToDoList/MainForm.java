@@ -7,8 +7,6 @@ package BIT707_A3_5001428_ToDoList;
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.BorderFactory;
-import javax.swing.JDesktopPane;
-import javax.swing.UIManager;
 
 public class MainForm extends javax.swing.JFrame {
     /**
@@ -16,12 +14,12 @@ public class MainForm extends javax.swing.JFrame {
      */
     public MainForm() {
         initComponents();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/logo.png")));
-        // logo.png retrieved from: <a href="https://www.flaticon.com/free-icons/abstract" title="abstract icons"></a> 
+        
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/to-do.png"))); 
+        // Sets styling for jpanel
+        jPanel_titleBar.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));    
         // Display a listView internalForm by default
         App.controller.displayListView(jDesktopPane_formContainer);
-        // Sets styling for jpanel
-        jPanel_titleBar.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));        
     }
         
     /**
@@ -39,7 +37,6 @@ public class MainForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImages(null);
-        setPreferredSize(null);
 
         jPanel_titleBar.setBackground(new java.awt.Color(255, 255, 255));
 
