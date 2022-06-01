@@ -6,6 +6,7 @@ package BIT707_A3_5001428_ToDoList;
 
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.table.DefaultTableModel;
 
 public class CalendarViewForm extends javax.swing.JInternalFrame {
 
@@ -23,6 +24,10 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         
         // Hides delete button until an item is selected
         jButton_deleteSelectedTask.setVisible(false);
+        
+        // Sets dates for current week 
+        App.controller.setSelectedWeek(0);
+        jLabel_currentWeek.setText(App.controller.getSelectedWeek());
         
         // Gets data for the jTable
         App.controller.populateTableData(jTable_calendarView);  
@@ -90,14 +95,17 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jLabel_editTaskDateIcon = new javax.swing.JLabel();
         jPanel_editTaskErrorMessage = new javax.swing.JPanel();
         jLabel_editTaskErrorMessage = new javax.swing.JLabel();
-        jScrollPane_calendarView = new javax.swing.JScrollPane();
         jPanel_calendarView = new javax.swing.JPanel();
         jLabel_calendarViewStatus = new javax.swing.JLabel();
-        jScrollPane_calendarViewJTable = new javax.swing.JScrollPane();
+        jScrollPane_calendarView = new javax.swing.JScrollPane();
         jTable_calendarView = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel_addTaskButtons = new javax.swing.JPanel();
         jButton_addTask = new javax.swing.JButton();
         jButton_deleteSelectedTask = new javax.swing.JButton();
+        jButton_calendarView_lastWeek = new javax.swing.JButton();
+        jButton_calendarView_nextWeek = new javax.swing.JButton();
+        jLabel_currentWeek = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jDialog_addTask.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog_addTask.setTitle("Add Task");
@@ -293,8 +301,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jDialog_viewTask.setIconImages(null);
         jDialog_viewTask.setLocation(new java.awt.Point(0, 0));
         jDialog_viewTask.setMinimumSize(new java.awt.Dimension(480, 435));
-        jDialog_viewTask.setModalExclusionType(null);
-        jDialog_viewTask.setModalityType(null);
+        jDialog_viewTask.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        jDialog_viewTask.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         jDialog_viewTask.setName(""); // NOI18N
         jDialog_viewTask.setResizable(false);
 
@@ -608,10 +616,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         setMaximumSize(new java.awt.Dimension(2147483647, 400));
         setMinimumSize(new java.awt.Dimension(56, 400));
         setName("CalendarView"); // NOI18N
-
-        jScrollPane_calendarView.setBorder(null);
-        jScrollPane_calendarView.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane_calendarView.setName("jScrollPane_calendarView"); // NOI18N
+        getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel_calendarView.setMaximumSize(new java.awt.Dimension(32767, 4000));
         jPanel_calendarView.setName("CalendarView"); // NOI18N
@@ -620,8 +625,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jLabel_calendarViewStatus.setText("Status");
         jLabel_calendarViewStatus.setName("jLabel_calendarViewStatus"); // NOI18N
 
-        jScrollPane_calendarViewJTable.setName("calendarView"); // NOI18N
-        jScrollPane_calendarViewJTable.setViewportView(null);
+        jScrollPane_calendarView.setName("calendarView"); // NOI18N
+        jScrollPane_calendarView.setViewportView(null);
 
         jTable_calendarView.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -646,10 +651,10 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable_calendarView.setMaximumSize(new java.awt.Dimension(2147483647, 640));
+        jTable_calendarView.setFillsViewportHeight(true);
+        jTable_calendarView.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         jTable_calendarView.setMinimumSize(new java.awt.Dimension(75, 640));
         jTable_calendarView.setName("CalendarView"); // NOI18N
-        jTable_calendarView.setPreferredSize(new java.awt.Dimension(135, 640));
         jTable_calendarView.setRowHeight(40);
         jTable_calendarView.setSelectionBackground(new java.awt.Color(79, 79, 79));
         jTable_calendarView.setSelectionForeground(new java.awt.Color(255, 255, 255));
@@ -659,7 +664,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
                 jTable_calendarViewMouseClicked(evt);
             }
         });
-        jScrollPane_calendarViewJTable.setViewportView(jTable_calendarView);
+        jScrollPane_calendarView.setViewportView(jTable_calendarView);
         if (jTable_calendarView.getColumnModel().getColumnCount() > 0) {
             jTable_calendarView.getColumnModel().getColumn(0).setMinWidth(0);
             jTable_calendarView.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -672,7 +677,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
             jTable_calendarView.getColumnModel().getColumn(3).setMaxWidth(0);
         }
 
-        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel_addTaskButtons.setName("jPanel_addTaskButtons"); // NOI18N
 
         jButton_addTask.setBackground(new java.awt.Color(75, 114, 153));
         jButton_addTask.setForeground(new java.awt.Color(255, 255, 255));
@@ -695,26 +700,67 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+        javax.swing.GroupLayout jPanel_addTaskButtonsLayout = new javax.swing.GroupLayout(jPanel_addTaskButtons);
+        jPanel_addTaskButtons.setLayout(jPanel_addTaskButtonsLayout);
+        jPanel_addTaskButtonsLayout.setHorizontalGroup(
+            jPanel_addTaskButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_addTaskButtonsLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
                 .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 45, Short.MAX_VALUE)
                 .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(38, 38, 38))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+        jPanel_addTaskButtonsLayout.setVerticalGroup(
+            jPanel_addTaskButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_addTaskButtonsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel_addTaskButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton_addTask, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                     .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        jButton_calendarView_lastWeek.setBackground(new java.awt.Color(240, 240, 240));
+        jButton_calendarView_lastWeek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/left-arrow.png"))); // NOI18N
+        jButton_calendarView_lastWeek.setBorder(null);
+        jButton_calendarView_lastWeek.setName(""); // NOI18N
+        jButton_calendarView_lastWeek.setPreferredSize(new java.awt.Dimension(20, 20));
+        jButton_calendarView_lastWeek.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/left-arrow.png"))); // NOI18N
+        jButton_calendarView_lastWeek.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_calendarView_lastWeekMouseClicked(evt);
+            }
+        });
+
+        jButton_calendarView_nextWeek.setBackground(new java.awt.Color(240, 240, 240));
+        jButton_calendarView_nextWeek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/right-arrow.png"))); // NOI18N
+        jButton_calendarView_nextWeek.setBorder(null);
+        jButton_calendarView_nextWeek.setName("jButton_calendarView_nextWeek"); // NOI18N
+        jButton_calendarView_nextWeek.setPreferredSize(new java.awt.Dimension(20, 20));
+        jButton_calendarView_nextWeek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_calendarView_nextWeekActionPerformed(evt);
+            }
+        });
+
+        jLabel_currentWeek.setText("Week #");
+        jLabel_currentWeek.setName("jLabel_currentWeek"); // NOI18N
+
+        jButton1.setBackground(new java.awt.Color(240, 240, 240));
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/circle-of-two-clockwise-arrows-rotation.png"))); // NOI18N
+        jButton1.setBorder(null);
+        jButton1.setFocusPainted(false);
+        jButton1.setLabel("");
+        jButton1.setMaximumSize(new java.awt.Dimension(24, 24));
+        jButton1.setMinimumSize(new java.awt.Dimension(24, 24));
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setPreferredSize(new java.awt.Dimension(20, 20));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel_calendarViewLayout = new javax.swing.GroupLayout(jPanel_calendarView);
         jPanel_calendarView.setLayout(jPanel_calendarViewLayout);
@@ -722,41 +768,39 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
             jPanel_calendarViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_calendarViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel_calendarViewStatus)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel_calendarViewLayout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(jScrollPane_calendarViewJTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                .addGroup(jPanel_calendarViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel_addTaskButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel_calendarViewLayout.createSequentialGroup()
+                        .addComponent(jLabel_calendarViewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_calendarView_lastWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel_currentWeek)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton_calendarView_nextWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))))
+            .addComponent(jScrollPane_calendarView)
         );
         jPanel_calendarViewLayout.setVerticalGroup(
             jPanel_calendarViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_calendarViewLayout.createSequentialGroup()
-                .addComponent(jLabel_calendarViewStatus)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane_calendarViewJTable, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(jPanel_calendarViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_calendarViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton_calendarView_lastWeek, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                        .addComponent(jButton_calendarView_nextWeek, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel_currentWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel_calendarViewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane_calendarView, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel_addTaskButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jScrollPane_calendarView.setViewportView(jPanel_calendarView);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane_calendarView, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane_calendarView, javax.swing.GroupLayout.DEFAULT_SIZE, 1573, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        getContentPane().add(jPanel_calendarView);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -785,7 +829,11 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_deleteSelectedTaskActionPerformed
 
     private void jTable_calendarViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_calendarViewMouseClicked
-        if(jTable_calendarView.getSelectedRow() != -1) {
+        // Resets visibility of delete button between row selections
+        jButton_deleteSelectedTask.setVisible(false);
+        // If the selected task number is -1 then it is a CalendarView weekday heading so the delete button is not displayed 
+        int selectedTaskNum = (int)jTable_calendarView.getValueAt(jTable_calendarView.getSelectedRow(), 0);         
+        if(jTable_calendarView.getSelectedRow() != -1 && selectedTaskNum != -1) {
             jButton_deleteSelectedTask.setVisible(true);
         }
     }//GEN-LAST:event_jTable_calendarViewMouseClicked
@@ -793,7 +841,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
         if(App.controller.addTask(jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
             // Re-populates data in the jTable to reflect changes
-            App.controller.updateTableData(jTable_calendarView);
+            App.controller.populateTableData(jTable_calendarView);
             jDialog_addTask.setVisible(false);
         }
         else {
@@ -850,15 +898,21 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
 
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
         jDialog_viewTask.setVisible(false);
-        App.controller.editTaskStatus(jTable_calendarView);
+        // Updates table model
+        String[] task = App.controller.getSelectedTask();
+        boolean status = Boolean.parseBoolean(task[4]);
+        jTable_calendarView.getModel().setValueAt(!status, jTable_calendarView.getSelectedRow(), 1);
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
 
     private void jButton_editTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskActionPerformed
         // Hides the viewTask dialog
         jDialog_viewTask.setVisible(false);
         // Populates the editTask dialog fields based on the taskNumber selected for editing
-        String[] taskComponents = App.controller.getTask();
-        jTextField_editTaskName.setText(taskComponents[1]);
+        String[] taskComponents = App.controller.getSelectedTask();
+        // Removes any HTML tags from taskName
+        String RegExMatchHTMLTags = "<[^>]*>";
+        String taskName = taskComponents[1].replaceAll(RegExMatchHTMLTags, "");
+        jTextField_editTaskName.setText(taskName);
         jTextArea_editTaskDetails.setText(taskComponents[2]);
         jTextField_editTaskDate.setText(taskComponents[3]);
         // Sets dialog position in centre of screen
@@ -925,11 +979,44 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jDialog_editTask.setVisible(false);
     }//GEN-LAST:event_jButton_editTaskCancelActionPerformed
 
+    private void jButton_calendarView_lastWeekMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_calendarView_lastWeekMouseClicked
+        // Moves the selected week back by one week
+        App.controller.setSelectedWeek(-1);
+        jLabel_currentWeek.setText(App.controller.getSelectedWeek());
+        // Re-populates the table data to show the selected week
+        App.controller.populateTableData(jTable_calendarView);
+        DefaultTableModel tableModel = (DefaultTableModel)jTable_calendarView.getModel();
+        tableModel.fireTableDataChanged();
+    }//GEN-LAST:event_jButton_calendarView_lastWeekMouseClicked
+
+    private void jButton_calendarView_nextWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_calendarView_nextWeekActionPerformed
+        // Moves the selected week forward by one week
+        App.controller.setSelectedWeek(1);
+        jLabel_currentWeek.setText(App.controller.getSelectedWeek());
+        // Re-populates the table data to show the selected week
+        App.controller.populateTableData(jTable_calendarView);
+        DefaultTableModel tableModel = (DefaultTableModel)jTable_calendarView.getModel();
+        tableModel.fireTableDataChanged();
+    }//GEN-LAST:event_jButton_calendarView_nextWeekActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // Moves the selected week to the current week
+        App.controller.setSelectedWeek(0);
+        jLabel_currentWeek.setText(App.controller.getSelectedWeek());
+        // Re-populates the table data to show the selected week
+        App.controller.populateTableData(jTable_calendarView);
+        DefaultTableModel tableModel = (DefaultTableModel)jTable_calendarView.getModel();
+        tableModel.fireTableDataChanged();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_addTask;
     private javax.swing.JButton jButton_addTaskCancel;
     private javax.swing.JButton jButton_addTaskSave;
+    private javax.swing.JButton jButton_calendarView_lastWeek;
+    private javax.swing.JButton jButton_calendarView_nextWeek;
     private javax.swing.JButton jButton_deleteSelectedTask;
     private javax.swing.JButton jButton_editTask;
     private javax.swing.JButton jButton_editTaskCancel;
@@ -942,12 +1029,13 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel_addTaskDetailsIcon;
     private javax.swing.JLabel jLabel_addTaskErrorMessage;
     private javax.swing.JLabel jLabel_calendarViewStatus;
+    private javax.swing.JLabel jLabel_currentWeek;
     private javax.swing.JLabel jLabel_editTaskDateIcon;
     private javax.swing.JLabel jLabel_editTaskDetailsIcon;
     private javax.swing.JLabel jLabel_editTaskErrorMessage;
     private javax.swing.JLabel jLabel_viewTaskDateIcon;
     private javax.swing.JLabel jLabel_viewTaskDetailsIcon;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel_addTaskButtons;
     private javax.swing.JPanel jPanel_addTaskErrorMessage;
     private javax.swing.JPanel jPanel_addTaskPanel;
     private javax.swing.JPanel jPanel_calendarView;
@@ -956,7 +1044,6 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel_viewTaskPanel;
     private javax.swing.JScrollPane jScrollPane_addTask;
     private javax.swing.JScrollPane jScrollPane_calendarView;
-    private javax.swing.JScrollPane jScrollPane_calendarViewJTable;
     private javax.swing.JScrollPane jScrollPane_editTask;
     private javax.swing.JScrollPane jScrollPane_viewTask;
     private javax.swing.JTable jTable_calendarView;
