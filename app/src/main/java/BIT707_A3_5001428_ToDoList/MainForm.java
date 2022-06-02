@@ -10,15 +10,15 @@ import javax.swing.BorderFactory;
 
 public class MainForm extends javax.swing.JFrame {
     /**
-     * Creates new MainForm which is used as a MDI container
+     * Creates a new MainForm which is used as a MDI container
      */
     public MainForm() {
         initComponents();
-        
+        // Adds a header image
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/to-do.png"))); 
-        // Sets styling for jpanel
+        // Sets border styling for title/navigation bar
         jPanel_titleBar.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));    
-        // Display a listView internalForm by default
+        // Displays a listView inside its desktopPane container
         App.controller.displayListView(jDesktopPane_formContainer);
     }
         
@@ -42,7 +42,7 @@ public class MainForm extends javax.swing.JFrame {
 
         jLabel_appTitle.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel_appTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_appTitle.setText("TO DO LIST");
+        jLabel_appTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/to_do_header.png"))); // NOI18N
         jLabel_appTitle.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jButton_listView.setBackground(new java.awt.Color(255, 255, 255));
@@ -77,26 +77,24 @@ public class MainForm extends javax.swing.JFrame {
         jPanel_titleBarLayout.setHorizontalGroup(
             jPanel_titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_titleBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel_appTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 464, Short.MAX_VALUE)
+                .addComponent(jLabel_appTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
                 .addComponent(jButton_listView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButton_calendarView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addGap(22, 22, 22))
         );
         jPanel_titleBarLayout.setVerticalGroup(
             jPanel_titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_titleBarLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel_titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_titleBarLayout.createSequentialGroup()
-                        .addComponent(jButton_calendarView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel_appTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel_titleBarLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton_listView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel_appTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel_titleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton_calendarView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton_listView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -114,9 +112,9 @@ public class MainForm extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel_titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDesktopPane_formContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                .addComponent(jPanel_titleBar, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jDesktopPane_formContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
