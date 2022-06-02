@@ -3,13 +3,11 @@
  * Jason Norton - 5001428
  */
 package BIT707_A3_5001428_ToDoList;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Task {
-    /**
-     * Task Attributes
-     */
     private int taskNumber;
     private String taskName;
     private String taskDescription;
