@@ -154,7 +154,7 @@ public class Controller {
      */
      public void populateTableData(JTable jTable) {
         DefaultTableModel tableModel = (DefaultTableModel)jTable.getModel();
-        // Removes any existing row data first
+        // Removes any existing row data first 
         tableModel.setRowCount(0);
         // Sets table model
         jTable.setModel(tableModel);
@@ -164,25 +164,9 @@ public class Controller {
         String tableName = jTable.getName();
         if(tableName.equals("ListView")) {
             // Adds row data from list of Task objects
-            for (int i = 0; i < taskList.size(); i++) {
-                // Breaks down Task object into its attributes (one attribute goes into each column)
-                int taskNumber = taskList.get(i).getTaskNumber();
-                Boolean taskStatus = taskList.get(i).isTaskStatus();
-                String taskName = String.valueOf(taskList.get(i).getTaskName());
-                LocalDate taskDate = taskList.get(i).getTaskDate();
-                // Formats date for NZ
-                // String taskDate = formatDate((tasks.get(i).getTaskDate()));
-                // Sets row data
-                Object[] rowData = {
-                    taskNumber,
-                    taskStatus, 
-                    taskName,
-                    taskDate
-                };
-                tableModel.addRow(rowData);
+            for(Task task : taskList) {
+                generateRowData(task, tableModel);
             }
-            // Displays dates as dd-mm-yyyy        
-            renderTableDateColumn(jTable);
             // Sorts table by date column but only when calendarView is not being displayed
             sortTable(jTable);
         }
@@ -272,22 +256,19 @@ public class Controller {
             for(Task task : sundayList) {
                 generateRowData(task, tableModel);
             } 
-            // Displays dates as dd-mm-yyyy        
-            renderTableDateColumn(jTable);
         }              
+        // Displays dates as dd-mm-yyyy        
+        renderTableDateColumn(jTable);
         // Notifies of changes to the data model
         tableModel.fireTableDataChanged();
     }
      
     public void generateRowData(Task task, DefaultTableModel tableModel) {
-        // Breaks down Task object into its attributes (one attribute goes into each column)
-          
+        // Breaks down Task object into its attributes (one attribute goes into each column)         
         int taskNumber = task.getTaskNumber();
         Boolean taskStatus = task.isTaskStatus();
         String taskName = task.getTaskName();
         LocalDate taskDate = task.getTaskDate();
-        // Formats date for NZ
-        // String taskDate = formatDate((tasks.get(i).getTaskDate()));
         // Sets row data
         Object[] rowData = {
             taskNumber,
@@ -343,7 +324,23 @@ public class Controller {
         });
     }
     
+    public int getTaskIndex(int taskNumber) {
+        int index = -1;
+        for(int i = 0; i < taskList.size(); i++) {
+            if(taskList.get(i).getTaskNumber() == taskNumber) {
+                index = i;
+            }
+        }
+        return index;
+    }
+    
     public void addOrRemoveStrikethrough(TableModel tableModel, int row, int taskNumber, String taskName, LocalDate taskDate, boolean taskStatus) {
+        int _row = row;
+        int _taskNum = taskNumber;
+        String _taskName = taskName;
+        
+        int rowTaskNum = (int)tableModel.getValueAt(row, 0);
+        
         // Updates database 
         dbConnection.updateTask(String.valueOf(taskNumber), String.valueOf(taskStatus));
         // Updates taskList
@@ -491,7 +488,7 @@ public class Controller {
         calendarViewForm.setVisible(true);
     }
     
-    public boolean addTask(JTextField taskNameField, JTextArea taskDetailsField, JTextField taskDateField) {
+    public boolean addTask(JTable jTable, JTextField taskNameField, JTextArea taskDetailsField, JTextField taskDateField) {
         String taskNumber = "";
         String taskName = "";
         String taskDescription = ""; 
@@ -558,6 +555,8 @@ public class Controller {
                 if(task.getTaskNumber() != -1) {
                     taskList.add(task);
                     methodSuccessful = true;
+                    // Refresh the jTable model
+                    populateTableData(jTable); 
                 }
                 else {
                     System.out.println("Error: Unable to add task to controller's task list");
