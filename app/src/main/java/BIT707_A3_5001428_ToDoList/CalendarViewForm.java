@@ -658,6 +658,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jTable_calendarView.setRowHeight(40);
         jTable_calendarView.setSelectionBackground(new java.awt.Color(79, 79, 79));
         jTable_calendarView.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jTable_calendarView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTable_calendarView.getTableHeader().setReorderingAllowed(false);
         jTable_calendarView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -839,9 +840,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTable_calendarViewMouseClicked
 
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
-        if(App.controller.addTask(jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
-            // Re-populates data in the jTable to reflect changes
-            App.controller.populateTableData(jTable_calendarView);
+        if(App.controller.addTask(jTable_calendarView, jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
             jDialog_addTask.setVisible(false);
         }
         else {
