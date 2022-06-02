@@ -4,16 +4,17 @@
  */
 package BIT707_A3_5001428_ToDoList;
 
-
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * Displays a table containing tasks with their status, task name, and due date
+ */
 public class ListViewForm extends javax.swing.JInternalFrame {
     public DefaultTableModel tableModel;
     /**
-     * ListViewForm constructor
+     * Creates new ListViewForm and populates it with data
      */
     public ListViewForm() {
         initComponents();
@@ -31,6 +32,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         App.controller.addTableMouseClickListener(jTable_listView, jDialog_viewTask);
     }
         
+    /**
+     * Displays a dialog on screen showing a detailed view of the selected task
+     * @param taskComponents 
+     */
     public void displayTask(ArrayList<String> taskComponents) {
         jTextField_viewTaskName.setText(taskComponents.get(1));
         jTextArea_viewTaskDetails.setText(taskComponents.get(2));
@@ -712,7 +717,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
             .addGroup(jPanel_addTaskLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 514, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                 .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50))
         );
@@ -722,7 +727,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
                 .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(jPanel_addTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_addTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton_deleteSelectedTask, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -731,6 +736,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    /**
+     * Handles 'Add Task' button click - displays a dialog on screen for the user to add a new task
+     * @param evt 
+     */
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
         if(App.controller.addTask(jTable_listView, jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
             jDialog_addTask.setVisible(false);
@@ -740,6 +749,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }  
     }//GEN-LAST:event_jButton_addTaskSaveActionPerformed
 
+    /**
+     * Fires when user clicks on the 'Task Name' text field in 'Add Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_addTaskNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskNameFocusGained
         if(jTextField_addTaskName.getText().equals("Enter task name") || jTextField_addTaskName.getText().equals("*Task name is required")) {
             jTextField_addTaskName.setText("");
@@ -748,12 +761,21 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_addTaskNameFocusGained
 
+    /**
+     * Fires when user clicks away from the 'Task Name' text field in 'Add Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextField_addTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskNameFocusLost
         if(jTextField_addTaskName.getText().equals("")) {
             jTextField_addTaskName.setText("Enter task name");
         }
     }//GEN-LAST:event_jTextField_addTaskNameFocusLost
 
+    /**
+     * Fires when user clicks on the 'Description' text field in 'Add Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextArea_addTaskDetailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_addTaskDetailsFocusGained
         if(jTextArea_addTaskDetails.getText().equals("Add task details")) {
         jTextArea_addTaskDetails.setText("");
@@ -761,12 +783,21 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextArea_addTaskDetailsFocusGained
 
+    /**
+     * Fires when user clicks away from the 'Description' text field in 'Add Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextArea_addTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_addTaskDetailsFocusLost
         if(jTextArea_addTaskDetails.getText().equals("")) {
         jTextArea_addTaskDetails.setText("Add task details");
         }
     }//GEN-LAST:event_jTextArea_addTaskDetailsFocusLost
 
+    /**
+     * Fires when user clicks on the 'Date' text field in 'Add Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_addTaskDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskDateFocusGained
         if(jTextField_addTaskDate.getText().equals("dd-mm-yyyy") || 
         jTextField_addTaskDate.getText().equals("*Date required") || 
@@ -777,16 +808,30 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_addTaskDateFocusGained
 
+    /**
+     * Fires when user clicks away from the 'Date' text field in 'Add Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextField_addTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskDateFocusLost
         if(jTextField_addTaskDate.getText().equals("")) {
             jTextField_addTaskDate.setText("dd-mm-yyyy");
         }
     }//GEN-LAST:event_jTextField_addTaskDateFocusLost
 
+    /**
+     * Fires when the user clicks on the 'Cancel' button in 'Add Task' dialog - Closes the dialog
+     * @param evt 
+     */
     private void jButton_addTaskCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskCancelActionPerformed
         jDialog_addTask.setVisible(false);
     }//GEN-LAST:event_jButton_addTaskCancelActionPerformed
 
+    /**
+     * Fires when the user clicks 'Mark as Completed' button in 'View Task' dialog 
+     * - Closes the dialog, checks the selected task checkbox and adds a strikethrough to it
+     * @param evt 
+     */
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
         jDialog_viewTask.setVisible(false);        
         // Updates table model
@@ -798,6 +843,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTable_listView.getModel().setValueAt(!status, taskIndex, 1);
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
     
+    /**
+     * Fires when the user clicks the edit icon on view task dialog - closes view task dialog and opens the edit task dialog
+     * @param evt 
+     */
     private void jButton_editTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskActionPerformed
         // Hides the viewTask dialog
         jDialog_viewTask.setVisible(false);
@@ -815,12 +864,20 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jDialog_editTask.setVisible(true);
     }//GEN-LAST:event_jButton_editTaskActionPerformed
 
+    /**
+     * Handles single mouse clicks - Shows the 'Delete Selected' button when a table row has been clicked (selected)
+     * @param evt 
+     */
     private void jTable_listViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_listViewMouseClicked
         if(jTable_listView.getSelectedRow() != -1) {
             jButton_deleteSelectedTask.setVisible(true);
         }
     }//GEN-LAST:event_jTable_listViewMouseClicked
 
+    /**
+     * Fires when 'Save' button is clicked from the edit task dialog - Closes the dialog and calls for the data model to be updated
+     * @param evt 
+     */
     private void jButton_editTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskSaveActionPerformed
         boolean dbUpdated = App.controller.editTask(jTable_listView, jTextField_editTaskName, jTextArea_editTaskDetails, jTextField_editTaskDate);
         if(dbUpdated) {
@@ -833,6 +890,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }  
     }//GEN-LAST:event_jButton_editTaskSaveActionPerformed
 
+    /**
+     * Fires when user clicks on the 'Task Name' text field in 'Edit Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_editTaskNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusGained
         if(jTextField_editTaskName.getText().equals("Enter task name") || jTextField_editTaskName.getText().equals("*Task name is required")) {
             jTextField_editTaskName.setText("");
@@ -841,12 +902,20 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_editTaskNameFocusGained
 
+    /**
+     * Fires when user clicks away from the 'Task Name' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextField_editTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusLost
         if(jTextField_editTaskName.getText().equals("")) {
             jTextField_editTaskName.setText("Enter task name");
         }
     }//GEN-LAST:event_jTextField_editTaskNameFocusLost
 
+    /**
+     * Fires when user clicks on the 'Date' text field in 'Edit Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_editTaskDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusGained
         if(jTextField_editTaskDate.getText().equals("dd-mm-yyyy") || 
         jTextField_editTaskDate.getText().equals("*Date required") || 
@@ -857,12 +926,21 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_editTaskDateFocusGained
 
+    /**
+     * Fires when user clicks away from the 'Date' text field in 'Edit Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextField_editTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusLost
         if(jTextField_editTaskDate.getText().equals("")) {
             jTextField_editTaskDate.setText("dd-mm-yyyy");
         }
     }//GEN-LAST:event_jTextField_editTaskDateFocusLost
 
+    /**
+     * Fires when user clicks on the 'Description' text field in 'Edit Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextArea_editTaskDetailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusGained
         if(jTextArea_editTaskDetails.getText().equals("Add task details")) {
         jTextArea_editTaskDetails.setText("");
@@ -870,16 +948,29 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextArea_editTaskDetailsFocusGained
 
+    /**
+     * Fires when user clicks away from the 'DEscription' text field in 'Edit Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextArea_editTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusLost
         if(jTextArea_editTaskDetails.getText().equals("")) {
         jTextArea_editTaskDetails.setText("Add task details");
         }
     }//GEN-LAST:event_jTextArea_editTaskDetailsFocusLost
 
+    /**
+     * Fires when user clicks on the 'Cancel' button in 'Edit Task' dialog - Closes the dialog
+     * @param evt 
+     */
     private void jButton_editTaskCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskCancelActionPerformed
         jDialog_editTask.setVisible(false);
     }//GEN-LAST:event_jButton_editTaskCancelActionPerformed
 
+    /**
+     * Handles 'Delete Selected' button click - Removes the selected task from the view and calls for the data model to be updated
+     * @param evt 
+     */
     private void jButton_deleteSelectedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_deleteSelectedTaskActionPerformed
         int selectedRow = jTable_listView.getSelectedRow();
         int selectedTaskNum = (int)jTable_listView.getValueAt(selectedRow, 0);
@@ -891,7 +982,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_deleteSelectedTaskActionPerformed
 
     /**
-     * Displays a modal dialog box on screen for user to add a new task
+     * Handles 'Add Task' button click - displays a dialog on screen for the user to add a new task
      * @param evt 
      */
     private void jButton_addTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskActionPerformed
