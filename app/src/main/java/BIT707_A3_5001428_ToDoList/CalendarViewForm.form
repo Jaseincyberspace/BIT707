@@ -911,7 +911,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel_calendarViewStatus" min="-2" pref="57" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="36" max="-2" attributes="0"/>
+                          <Component id="jButton_resetSelectedWeek" min="-2" pref="36" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jButton_calendarView_lastWeek" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -936,7 +936,7 @@
                           <Component id="jLabel_currentWeek" alignment="1" min="-2" pref="17" max="-2" attributes="0"/>
                           <Component id="jLabel_calendarViewStatus" alignment="1" min="-2" pref="18" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jButton1" min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="jButton_resetSelectedWeek" min="-2" pref="27" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane_calendarView" pref="408" max="32767" attributes="0"/>
@@ -1141,7 +1141,7 @@
             <Property name="name" type="java.lang.String" value="jLabel_currentWeek" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="jButton_resetSelectedWeek">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="f0" green="f0" red="f0" type="rgb"/>
@@ -1153,20 +1153,13 @@
               <Border info="null"/>
             </Property>
             <Property name="focusPainted" type="boolean" value="false"/>
-            <Property name="label" type="java.lang.String" value=""/>
-            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[24, 24]"/>
-            </Property>
-            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[24, 24]"/>
-            </Property>
-            <Property name="name" type="java.lang.String" value="jButton1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="jButton_resetSelectedWeek" noResource="true"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[20, 20]"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton_resetSelectedWeekActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

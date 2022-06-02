@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Displays tasks to the user organised by days of the week
+ */
 public class CalendarViewForm extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new CalendarViewForm
+     * Creates new CalendarViewForm and populates it with data
      */
     public CalendarViewForm() {
         initComponents();
@@ -35,7 +38,11 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         // Handles double mouse clicks on table rows
         App.controller.addTableMouseClickListener(jTable_calendarView, jDialog_viewTask);
     }
-
+        
+        /**
+         * Displays a dialog on screen showing a detailed view of the selected task
+         * @param taskComponents 
+         */
         public void displayTask(ArrayList<String> taskComponents) {
             jTextField_viewTaskName.setText(taskComponents.get(1));
             jTextArea_viewTaskDetails.setText(taskComponents.get(2));
@@ -48,7 +55,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
             else {
                 jButton_viewTaskMarkCompleted.setText("Mark as completed");
             }
-            // Display the dialog box in the centre of the parent form
+            // Displays the dialog box in the centre of the parent form
             jDialog_viewTask.setLocationRelativeTo(this.jScrollPane_calendarView);
             jDialog_viewTask.setName(taskComponents.get(0));
             jDialog_viewTask.setVisible(true);
@@ -105,7 +112,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jButton_calendarView_lastWeek = new javax.swing.JButton();
         jButton_calendarView_nextWeek = new javax.swing.JButton();
         jLabel_currentWeek = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButton_resetSelectedWeek = new javax.swing.JButton();
 
         jDialog_addTask.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         jDialog_addTask.setTitle("Add Task");
@@ -748,18 +755,15 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jLabel_currentWeek.setText("Week #");
         jLabel_currentWeek.setName("jLabel_currentWeek"); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(240, 240, 240));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/circle-of-two-clockwise-arrows-rotation.png"))); // NOI18N
-        jButton1.setBorder(null);
-        jButton1.setFocusPainted(false);
-        jButton1.setLabel("");
-        jButton1.setMaximumSize(new java.awt.Dimension(24, 24));
-        jButton1.setMinimumSize(new java.awt.Dimension(24, 24));
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.setPreferredSize(new java.awt.Dimension(20, 20));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton_resetSelectedWeek.setBackground(new java.awt.Color(240, 240, 240));
+        jButton_resetSelectedWeek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/circle-of-two-clockwise-arrows-rotation.png"))); // NOI18N
+        jButton_resetSelectedWeek.setBorder(null);
+        jButton_resetSelectedWeek.setFocusPainted(false);
+        jButton_resetSelectedWeek.setName("jButton_resetSelectedWeek"); // NOI18N
+        jButton_resetSelectedWeek.setPreferredSize(new java.awt.Dimension(20, 20));
+        jButton_resetSelectedWeek.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton_resetSelectedWeekActionPerformed(evt);
             }
         });
 
@@ -774,7 +778,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
                     .addGroup(jPanel_calendarViewLayout.createSequentialGroup()
                         .addComponent(jLabel_calendarViewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_resetSelectedWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton_calendarView_lastWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -794,7 +798,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
                         .addComponent(jButton_calendarView_nextWeek, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel_currentWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel_calendarViewStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton_resetSelectedWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane_calendarView, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -806,20 +810,29 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Handles 'Add Task' button click - displays a dialog on screen for the user to add a new task
+     * @param evt 
+     */
     private void jButton_addTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskActionPerformed
-        // Reset dialog fields
+        // Resets dialog fields
         jTextField_addTaskName.setText("Enter task name");
         jTextArea_addTaskDetails.setText("Add task details");
         jTextField_addTaskDate.setText("dd-mm-yyyy");
         jLabel_addTaskErrorMessage.setText("");
+        // Sets border styles 
         jTextField_addTaskName.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         jTextArea_addTaskDetails.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         jTextField_addTaskDate.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
-        // Display the dialog box in the centre of the parent form
+        // Displays the dialog box in the centre of the parent form
         jDialog_addTask.setLocationRelativeTo(this);
         jDialog_addTask.setVisible(true);
     }//GEN-LAST:event_jButton_addTaskActionPerformed
 
+    /**
+     * Handles 'Delete Selected' button click - Removes the selected task from the view and calls for the data model to be updated
+     * @param evt 
+     */
     private void jButton_deleteSelectedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_deleteSelectedTaskActionPerformed
         int selectedRow = jTable_calendarView.getSelectedRow();
         int selectedTaskNum = (int)jTable_calendarView.getValueAt(selectedRow, 0);
@@ -829,6 +842,10 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jButton_deleteSelectedTask.setVisible(false);
     }//GEN-LAST:event_jButton_deleteSelectedTaskActionPerformed
 
+    /**
+     * Handles single mouse clicks - Shows the 'Delete Selected' button when a task has been clicked on
+     * @param evt 
+     */
     private void jTable_calendarViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_calendarViewMouseClicked
         // Resets visibility of delete button between row selections
         jButton_deleteSelectedTask.setVisible(false);
@@ -839,15 +856,24 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTable_calendarViewMouseClicked
 
+    /**
+     * Handles 'Save' button click for new tasks - Calls for the new task to be added to the data model and closes the add task dialog box
+     * @param evt 
+     */
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
         if(App.controller.addTask(jTable_calendarView, jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
             jDialog_addTask.setVisible(false);
         }
         else {
+            // Displays failure message to the user
             jLabel_addTaskErrorMessage.setText("Unable to add task. Contact your system administrator for assistance.");
         }
     }//GEN-LAST:event_jButton_addTaskSaveActionPerformed
 
+    /**
+     * Fires when user clicks on the 'Task Name' text field in 'Add Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_addTaskNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskNameFocusGained
         if(jTextField_addTaskName.getText().equals("Enter task name") || jTextField_addTaskName.getText().equals("*Task name is required")) {
             jTextField_addTaskName.setText("");
@@ -855,13 +881,21 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
             jLabel_addTaskErrorMessage.setText("");
         }
     }//GEN-LAST:event_jTextField_addTaskNameFocusGained
-
+    
+    /**
+     * Fires when user clicks away from the 'Task Name' text field in 'Add Task' dialog - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextField_addTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskNameFocusLost
         if(jTextField_addTaskName.getText().equals("")) {
             jTextField_addTaskName.setText("Enter task name");
         }
     }//GEN-LAST:event_jTextField_addTaskNameFocusLost
 
+    /**
+     * Fires when user clicks on the 'Date' text field in 'Add Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_addTaskDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskDateFocusGained
         if(jTextField_addTaskDate.getText().equals("dd-mm-yyyy") ||
             jTextField_addTaskDate.getText().equals("*Date required") ||
@@ -872,12 +906,20 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_addTaskDateFocusGained
 
+    /**
+     * Fires when user clicks away from the 'Date' text field in 'Add Task' dialog - Provides hint text to assist the user when filling out the field
+     * @param evt 
+     */
     private void jTextField_addTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskDateFocusLost
         if(jTextField_addTaskDate.getText().equals("")) {
             jTextField_addTaskDate.setText("dd-mm-yyyy");
         }
     }//GEN-LAST:event_jTextField_addTaskDateFocusLost
 
+    /**
+     * Fires when user clicks on the 'Description' text field in 'Add Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextArea_addTaskDetailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_addTaskDetailsFocusGained
         if(jTextArea_addTaskDetails.getText().equals("Add task details")) {
             jTextArea_addTaskDetails.setText("");
@@ -885,16 +927,28 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextArea_addTaskDetailsFocusGained
 
+    /**
+    * Fires when user clicks away from the 'Description' text field in 'Add Task' dialog - Provides hint text to assist the user when filling out the field
+    * @param evt 
+    */
     private void jTextArea_addTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_addTaskDetailsFocusLost
         if(jTextArea_addTaskDetails.getText().equals("")) {
             jTextArea_addTaskDetails.setText("Add task details");
         }
     }//GEN-LAST:event_jTextArea_addTaskDetailsFocusLost
 
+    /**
+     * Fires when the user clicks on the 'Cancel' button in 'Add Task' dialog - Closes the dialog
+     * @param evt 
+     */
     private void jButton_addTaskCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskCancelActionPerformed
         jDialog_addTask.setVisible(false);
     }//GEN-LAST:event_jButton_addTaskCancelActionPerformed
 
+    /**
+     * Fires when the user clicks 'Mark as Completed' button in 'View Task' dialog - Closes the dialog, checks the selected task checkbox and adds a strikethrough to it
+     * @param evt 
+     */
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
         jDialog_viewTask.setVisible(false);
         // Updates table model
@@ -903,6 +957,10 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jTable_calendarView.getModel().setValueAt(!status, jTable_calendarView.getSelectedRow(), 1);
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
 
+    /**
+     * Fires when the user clicks the edit icon on view task dialog - closes view task dialog and opens the edit task dialog
+     * @param evt 
+     */
     private void jButton_editTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskActionPerformed
         // Hides the viewTask dialog
         jDialog_viewTask.setVisible(false);
@@ -920,17 +978,27 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jDialog_editTask.setVisible(true);
     }//GEN-LAST:event_jButton_editTaskActionPerformed
 
+    /**
+     * Fires when 'Save' button is clicked from the edit task dialog - Closes the dialog and calls for the data model to be updated
+     * @param evt 
+     */
     private void jButton_editTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskSaveActionPerformed
+        // Checks to make sure the edited task was saved properly
         if(App.controller.editTask(jTable_calendarView, jTextField_editTaskName, jTextArea_editTaskDetails, jTextField_editTaskDate)) {
             // Re-populates data in the jTable to reflect changes
             App.controller.populateTableData(jTable_calendarView);
             jDialog_editTask.setVisible(false);
         }
         else {
+            // Task did not save correctly - There will be an error message printed to console with further details
             jLabel_editTaskErrorMessage.setText("Unable to edit task. Contact your system administrator for assistance.");
         }
     }//GEN-LAST:event_jButton_editTaskSaveActionPerformed
 
+    /**
+     * Fires when user clicks on the 'Task Name' text field in 'Edit Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_editTaskNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusGained
         if(jTextField_editTaskName.getText().equals("Enter task name") || jTextField_editTaskName.getText().equals("*Task name is required")) {
             jTextField_editTaskName.setText("");
@@ -939,12 +1007,20 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_editTaskNameFocusGained
 
+    /**
+    * Fires when user clicks away from the 'Task Name' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+    * @param evt 
+    */
     private void jTextField_editTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusLost
         if(jTextField_editTaskName.getText().equals("")) {
             jTextField_editTaskName.setText("Enter task name");
         }
     }//GEN-LAST:event_jTextField_editTaskNameFocusLost
 
+    /**
+     * Fires when user clicks on the 'Date' text field in 'Edit Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextField_editTaskDateFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusGained
         if(jTextField_editTaskDate.getText().equals("dd-mm-yyyy") ||
             jTextField_editTaskDate.getText().equals("*Date required") ||
@@ -955,12 +1031,20 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextField_editTaskDateFocusGained
 
+    /**
+    * Fires when user clicks away from the 'Date' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+    * @param evt 
+    */
     private void jTextField_editTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusLost
         if(jTextField_editTaskDate.getText().equals("")) {
             jTextField_editTaskDate.setText("dd-mm-yyyy");
         }
     }//GEN-LAST:event_jTextField_editTaskDateFocusLost
 
+    /**
+     * Fires when user clicks on the 'Description' text field in 'Edit Task' dialog - Resets field text
+     * @param evt 
+     */
     private void jTextArea_editTaskDetailsFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusGained
         if(jTextArea_editTaskDetails.getText().equals("Add task details")) {
             jTextArea_editTaskDetails.setText("");
@@ -968,16 +1052,28 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextArea_editTaskDetailsFocusGained
 
+    /**
+    * Fires when user clicks away from the 'DEscription' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+    * @param evt 
+    */
     private void jTextArea_editTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusLost
         if(jTextArea_editTaskDetails.getText().equals("")) {
             jTextArea_editTaskDetails.setText("Add task details");
         }
     }//GEN-LAST:event_jTextArea_editTaskDetailsFocusLost
 
+    /**
+     * Fires when user clicks on the 'Cancel' button in 'Edit Task' dialog - Closes the dialog
+     * @param evt 
+     */
     private void jButton_editTaskCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskCancelActionPerformed
         jDialog_editTask.setVisible(false);
     }//GEN-LAST:event_jButton_editTaskCancelActionPerformed
 
+    /**
+     * Fires when user clicks on the previous week icon - Gets dates for the previous week, retrieves tasks due that week then updates the view accordingly
+     * @param evt 
+     */
     private void jButton_calendarView_lastWeekMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_calendarView_lastWeekMouseClicked
         // Moves the selected week back by one week
         App.controller.setSelectedWeek(-1);
@@ -988,6 +1084,10 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         tableModel.fireTableDataChanged();
     }//GEN-LAST:event_jButton_calendarView_lastWeekMouseClicked
 
+    /**
+     * Fires when user clicks on the next week icon - Gets dates for the next week, retrieves tasks due that week then updates the view accordingly
+     * @param evt 
+     */
     private void jButton_calendarView_nextWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_calendarView_nextWeekActionPerformed
         // Moves the selected week forward by one week
         App.controller.setSelectedWeek(1);
@@ -998,7 +1098,11 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         tableModel.fireTableDataChanged();
     }//GEN-LAST:event_jButton_calendarView_nextWeekActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Fires when user clicks on the reset selected week icon - Gets dates for the current week, retrieves tasks due this week then updates the view accordingly
+     * @param evt 
+     */
+    private void jButton_resetSelectedWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_resetSelectedWeekActionPerformed
         // Moves the selected week to the current week
         App.controller.setSelectedWeek(0);
         jLabel_currentWeek.setText(App.controller.getSelectedWeek());
@@ -1006,11 +1110,10 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         App.controller.populateTableData(jTable_calendarView);
         DefaultTableModel tableModel = (DefaultTableModel)jTable_calendarView.getModel();
         tableModel.fireTableDataChanged();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton_resetSelectedWeekActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton_addTask;
     private javax.swing.JButton jButton_addTaskCancel;
     private javax.swing.JButton jButton_addTaskSave;
@@ -1020,6 +1123,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton_editTask;
     private javax.swing.JButton jButton_editTaskCancel;
     private javax.swing.JButton jButton_editTaskSave;
+    private javax.swing.JButton jButton_resetSelectedWeek;
     private javax.swing.JButton jButton_viewTaskMarkCompleted;
     private javax.swing.JDialog jDialog_addTask;
     private javax.swing.JDialog jDialog_editTask;
