@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 /**
  * This class connects the ToDo List application to an SQLite database
- * @author Jason Norton
  */
 public class DbConnection {
     /**
@@ -26,15 +25,9 @@ public class DbConnection {
     }
     
     /**
-     * Generates a SQLite query string to add a new task record in the 'Task' table
-     * The string is passed to insertUpdateOrDelete() for execution
-     * @param taskNumber
-     * @param taskName
-     * @param taskDescription
-     * @param taskDate
-     * @return 
+     * Finds the highest integer in the taskNumber column of database table 'Task'
+     * @return a string denoting the highest taskNumber value found in database table 'Task'
      */
-    
     public String getLargestTaskNumber() {
         String sql = "SELECT MAX(taskNumber) from TASK;";
         Statement statement = null;
@@ -55,23 +48,54 @@ public class DbConnection {
         return maxID;
     }
     
+    /**
+     * Generates a SQLite query string to add a new task record in the 'Task' table
+     * The string is passed to insertUpdateOrDelete() for execution
+     * @param taskNumber
+     * @param taskName
+     * @param taskDescription
+     * @param taskDate
+     * @return true if the task was added to the database successfully, otherwise false
+     */
     public boolean createTask(String taskNumber, String taskName, String taskDescription, String taskDate) {
         String sql = "INSERT INTO Task(taskNumber, taskName, taskDescription, dueDate, status) VALUES (" 
                 + "\"" + taskNumber + "\",\"" + taskName + "\",\"" + taskDescription + "\",\"" + taskDate + "\",\"" + "false\");";
         return insertUpdateOrDelete(sql); 
     }
     
+    /**
+     * Generates a SQLite query string to update one or more of the values in an existing task record in the 'Task' table
+     * The string is passed to insertUpdateOrDelete() for execution
+     * @param taskNumber
+     * @param taskName
+     * @param taskDescription
+     * @param taskDate
+     * @param taskStatus
+     * @return true if the task was updated successfully in the database, otherwise false
+     */
     public boolean updateTask(String taskNumber, String taskName, String taskDescription, String taskDate, String taskStatus) {
         String sql = "UPDATE Task SET taskName = " + "\"" + taskName + "\", taskDescription = " + "\"" + taskDescription + "\", dueDate = "
             + "\"" + taskDate + "\", status = " + "\"" + taskStatus +  "\"" + " WHERE taskNumber = " + "\"" + taskNumber + "\";";
         return insertUpdateOrDelete(sql); 
     }
-        
+    
+    /**
+     * Generates a SQLite query string to update the status value of an existing task record in the 'Task' table
+     * The string is passed to insertUpdateOrDelete() for execution
+     * @param taskNumber
+     * @param taskStatus
+     * @return true if the task's status value was updated successfully in the database, otherwise false
+     */
     public boolean updateTask(String taskNumber, String taskStatus) {
         String sql = "UPDATE Task SET status = \"" + taskStatus + "\" WHERE taskNumber = \"" + taskNumber + "\";";
         return insertUpdateOrDelete(sql); 
     }
-        
+    
+    /**
+     * Runs a SQLite database query on the 'Task' table to get a task with a given taskNumber (if one exists). 
+     * @param taskNumber
+     * @return an arrayList of strings containing one table row where taskNumber matches the one supplied, or an empty list if no such table row exists
+     */
     public ArrayList readTask(String taskNumber) {
         String sql = "SELECT * FROM Task WHERE taskNumber = " + "\"" + taskNumber + "\";";
         Statement statement = null;
@@ -102,22 +126,10 @@ public class DbConnection {
         }
         return tableRow;
     }
-    
-    /**
-     * Generates a SQLite query string to update the status of a selected task in the 'Task' table
-     * The string is passed to insertUpdateOrDelete() for execution
-     * @param taskNumber
-     * @param status
-     * @return 
-     */
-    public boolean updateTaskStatus (String taskNumber, String status) {
-        String sql = "UPDATE Task SET status = " + "\"" + status + "\"" + " WHERE taskNumber = " + "\"" + taskNumber + "\";";
-        return insertUpdateOrDelete(sql);
-    }
-    
+        
     /**
      * Runs a database query to select all data from the 'Task' table.
-     * @return ArrayList
+     * @return an ArrayList of ArrayLists. Each list contains one table row
      */
     public ArrayList readAllTasks() {
         
@@ -168,7 +180,7 @@ public class DbConnection {
     /**
      * Executes insert, update, or delete SQLite queries and returns a boolean value to confirm success or failure
      * @param sqlQuery
-     * @return 
+     * @return true if the query was executed successfully, otherwise false
      */
     public boolean insertUpdateOrDelete(String sqlQuery) {
         Statement statement = null;
