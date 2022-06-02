@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Displays tasks to the user organised by days of the week
+ * Displays tasks to the user organised by days of the week for the selected week (this week by default)
  */
 public class CalendarViewForm extends javax.swing.JInternalFrame {
 
@@ -843,7 +843,7 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_deleteSelectedTaskActionPerformed
 
     /**
-     * Handles single mouse clicks - Shows the 'Delete Selected' button when a task has been clicked on
+     * Handles single mouse clicks - Shows the 'Delete Selected' button when a table row has been clicked (selected)
      * @param evt 
      */
     private void jTable_calendarViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_calendarViewMouseClicked
@@ -883,7 +883,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField_addTaskNameFocusGained
     
     /**
-     * Fires when user clicks away from the 'Task Name' text field in 'Add Task' dialog - Provides hint text to assist the user when filling out the field
+     * Fires when user clicks away from the 'Task Name' text field in 'Add Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
      * @param evt 
      */
     private void jTextField_addTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskNameFocusLost
@@ -907,7 +908,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField_addTaskDateFocusGained
 
     /**
-     * Fires when user clicks away from the 'Date' text field in 'Add Task' dialog - Provides hint text to assist the user when filling out the field
+     * Fires when user clicks away from the 'Date' text field in 'Add Task' dialog 
+     * - Provides hint text to assist the user when filling out the field
      * @param evt 
      */
     private void jTextField_addTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_addTaskDateFocusLost
@@ -928,7 +930,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextArea_addTaskDetailsFocusGained
 
     /**
-    * Fires when user clicks away from the 'Description' text field in 'Add Task' dialog - Provides hint text to assist the user when filling out the field
+    * Fires when user clicks away from the 'Description' text field in 'Add Task' dialog 
+    * - Provides hint text to assist the user when filling out the field
     * @param evt 
     */
     private void jTextArea_addTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_addTaskDetailsFocusLost
@@ -946,7 +949,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_addTaskCancelActionPerformed
 
     /**
-     * Fires when the user clicks 'Mark as Completed' button in 'View Task' dialog - Closes the dialog, checks the selected task checkbox and adds a strikethrough to it
+     * Fires when the user clicks 'Mark as Completed' button in 'View Task' dialog 
+     * - Closes the dialog, checks the selected task checkbox and adds a strikethrough to it
      * @param evt 
      */
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
@@ -1008,7 +1012,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField_editTaskNameFocusGained
 
     /**
-    * Fires when user clicks away from the 'Task Name' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+    * Fires when user clicks away from the 'Task Name' text field in 'Edit Task' dialog 
+    * - Provides hint text to assist the user when filling out the field
     * @param evt 
     */
     private void jTextField_editTaskNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskNameFocusLost
@@ -1032,7 +1037,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField_editTaskDateFocusGained
 
     /**
-    * Fires when user clicks away from the 'Date' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+    * Fires when user clicks away from the 'Date' text field in 'Edit Task' dialog 
+    * - Provides hint text to assist the user when filling out the field
     * @param evt 
     */
     private void jTextField_editTaskDateFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField_editTaskDateFocusLost
@@ -1053,7 +1059,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextArea_editTaskDetailsFocusGained
 
     /**
-    * Fires when user clicks away from the 'DEscription' text field in 'Edit Task' dialog - Provides hint text to assist the user when filling out the field
+    * Fires when user clicks away from the 'DEscription' text field in 'Edit Task' dialog 
+    * - Provides hint text to assist the user when filling out the field
     * @param evt 
     */
     private void jTextArea_editTaskDetailsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextArea_editTaskDetailsFocusLost
