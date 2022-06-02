@@ -732,12 +732,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void jButton_addTaskSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_addTaskSaveActionPerformed
-        if(App.controller.addTask(jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
-            // Re-populates data in the jTable to reflect changes
-            App.controller.populateTableData(jTable_listView);
-            // Updates table model
-            DefaultTableModel tableModel = (DefaultTableModel)jTable_listView.getModel();
-            tableModel.fireTableDataChanged();
+        if(App.controller.addTask(jTable_listView, jTextField_addTaskName, jTextArea_addTaskDetails, jTextField_addTaskDate)) {
             jDialog_addTask.setVisible(false);
         }
         else {
@@ -795,9 +790,12 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     private void jButton_viewTaskMarkCompletedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_viewTaskMarkCompletedActionPerformed
         jDialog_viewTask.setVisible(false);        
         // Updates table model
+        int row = jTable_listView.getSelectedRow();
+        int taskNumber = (int)jTable_listView.getValueAt(row, 0);
+        int taskIndex = App.controller.getTaskIndex(taskNumber);
         String[] task = App.controller.getSelectedTask();
         boolean status = Boolean.parseBoolean(task[4]);
-        jTable_listView.getModel().setValueAt(!status, jTable_listView.getSelectedRow(), 1);
+        jTable_listView.getModel().setValueAt(!status, taskIndex, 1);
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
     
     private void jButton_editTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_editTaskActionPerformed
