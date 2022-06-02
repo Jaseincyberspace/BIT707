@@ -88,32 +88,31 @@ public class Controller {
     public void getAllTasks() {
         ArrayList<ArrayList<String>> allTaskData = (dbConnection.readAllTasks()); 
         // Creates Task objects from data returned by query
-        int listLength = allTaskData.size();
-        for (int i = 0; i < listLength; i++) {
+        for(ArrayList tableRow : allTaskData) {
             // Validates data retrieved from database
             int taskNumber = 0;
-            String taskName = allTaskData.get(i).get(1);
-            String taskDescription = allTaskData.get(i).get(2); 
+            String taskName = String.valueOf(tableRow.get(1));
+            String taskDescription = String.valueOf(tableRow.get(2)); 
             LocalDate taskDate = LocalDate.now();
             boolean taskStatus = false;
             String errorType = "";            
             // Checks to ensure data can be parsed 
             try {
-                taskNumber = Integer.parseInt(allTaskData.get(i).get(0)); 
+                taskNumber = Integer.parseInt((String)tableRow.get(0)); 
             }  
             catch(NumberFormatException e) {
                 errorType = "taskNumber";
                 System.out.println("EXCEPTION:" + e);
             }
             try {
-                taskDate = LocalDate.parse(allTaskData.get(i).get(3));                               
+                taskDate = LocalDate.parse((String)tableRow.get(3));                               
             }
             catch(java.time.format.DateTimeParseException e) {
                 errorType = "taskDate";
                 System.out.println("EXCEPTION:" + e);
             } 
             try {
-                taskStatus = Boolean.parseBoolean(allTaskData.get(i).get(4)); 
+                taskStatus = Boolean.parseBoolean((String)tableRow.get(4)); 
             }
             catch(Exception e) {
                 errorType = "taskStatus";
@@ -145,7 +144,7 @@ public class Controller {
                     default: 
                         break;
                 }      
-            }   
+            }  
         }
     }
      
@@ -328,10 +327,10 @@ public class Controller {
                         // Updates database 
                         dbConnection.updateTask(taskNumber, taskStatus);
                         // Updates taskList
-                        for(int i = 0; i < taskList.size(); i++) {
-                            if(taskList.get(i).getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
-                                taskList.get(i).setTaskName((String)tableModel.getValueAt(row, 2));
-                                taskList.get(i).setTaskDate((LocalDate)tableModel.getValueAt(row, 3));
+                        for(Task task : taskList) {
+                            if(task.getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
+                                task.setTaskName((String)tableModel.getValueAt(row, 2));
+                                task.setTaskDate((LocalDate)tableModel.getValueAt(row, 3));
                             }
                         }
                         // Print statement is for testing and debugging only
@@ -380,10 +379,10 @@ public class Controller {
         // Updates database 
         dbConnection.updateTask(String.valueOf(taskNumber), String.valueOf(taskStatus));
         // Updates taskList
-        for(int i = 0; i < taskList.size(); i++) {
-             if(taskList.get(i).getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
-                taskList.get(i).setTaskStatus((Boolean)tableModel.getValueAt(row, 1));
-             }
+        for(Task task : taskList) {
+            if(task.getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
+                task.setTaskStatus((Boolean)tableModel.getValueAt(row, 1));
+            }
         }
         // Where status is set to 'true' - Marks table row as completed (adds a strikethrough)
         if(taskStatus) {
@@ -678,9 +677,9 @@ public class Controller {
             validInput = false;
         } 
         // Gets task status
-        for(int i = 0; i < taskList.size(); i++) {
-            if(taskList.get(i).getTaskNumber() == selectedTaskNumber) {
-                taskStatus = String.valueOf(taskList.get(i).isTaskStatus());
+        for(Task task : taskList) {
+            if(task.getTaskNumber() == selectedTaskNumber) {
+                taskStatus = String.valueOf(task.isTaskStatus());
             }
         }           
         // If input is valid the selected record is updated in the database 
@@ -752,12 +751,12 @@ public class Controller {
         String taskDate = "";
         String taskStatus = "";
         
-        for(int i = 0; i < taskList.size(); i++) {
-            if(taskList.get(i).getTaskNumber() == selectedTaskNumber) {
-                taskName = taskList.get(i).getTaskName();
-                taskDescription = taskList.get(i).getTaskDescription();
-                taskDate = formatDate(taskList.get(i).getTaskDate());
-                taskStatus = String.valueOf(taskList.get(i).isTaskStatus());
+        for(Task task : taskList) {
+            if(task.getTaskNumber() == selectedTaskNumber) {
+                taskName = task.getTaskName();
+                taskDescription = task.getTaskDescription();
+                taskDate = formatDate(task.getTaskDate());
+                taskStatus = String.valueOf(task.isTaskStatus());
             }
         }
         String[] taskComponents = new String[] {taskNumber, taskName, taskDescription, taskDate, taskStatus};
