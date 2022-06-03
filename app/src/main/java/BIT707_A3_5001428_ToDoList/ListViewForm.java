@@ -7,6 +7,8 @@ package BIT707_A3_5001428_ToDoList;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.plaf.InternalFrameUI;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  * Displays a table containing tasks with their status, task name, and due date
@@ -19,8 +21,8 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     public ListViewForm() {
         initComponents();
         // Removes title bar from jInternalForm
-        javax.swing.plaf.InternalFrameUI internalFrameUI = this.getUI();
-        ((javax.swing.plaf.basic.BasicInternalFrameUI)internalFrameUI).setNorthPane(null);
+        InternalFrameUI internalFrameUI = this.getUI();
+        ((BasicInternalFrameUI)internalFrameUI).setNorthPane(null);
         
         // Hides delete button until an item is selected
         jButton_deleteSelectedTask.setVisible(false);
@@ -840,7 +842,13 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         int taskIndex = App.controller.getTaskIndex(taskNumber);
         String[] task = App.controller.getSelectedTask();
         boolean status = Boolean.parseBoolean(task[4]);
-        jTable_listView.getModel().setValueAt(!status, taskIndex, 1);
+        try {
+            jTable_listView.getModel().setValueAt(!status, taskIndex, 1);
+        }
+        catch (IndexOutOfBoundsException e) {
+            System.out.println("Task number " + taskNumber + " not found in task list. " + e);
+        }
+        
     }//GEN-LAST:event_jButton_viewTaskMarkCompletedActionPerformed
     
     /**
@@ -974,6 +982,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     private void jButton_deleteSelectedTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_deleteSelectedTaskActionPerformed
         int selectedRow = jTable_listView.getSelectedRow();
         int selectedTaskNum = (int)jTable_listView.getValueAt(selectedRow, 0);
+        // Calls for task to be deleted and prints result to console
         if(App.controller.deleteTask(jTable_listView, selectedRow, selectedTaskNum)) {
             System.out.println("Task " + selectedTaskNum + " at row " + selectedRow + " has been deleted");
         }
