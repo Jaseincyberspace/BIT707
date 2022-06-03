@@ -263,7 +263,7 @@ public class Controller {
         }              
         // Displays dates as dd-mm-yyyy        
         renderTableDateColumn(jTable);
-        // Notifies of changes to the data model
+        // Notifies table model listeners of changes to the data model
         tableModel.fireTableDataChanged();
     }
 
@@ -325,7 +325,7 @@ public class Controller {
                         String taskStatus = String.valueOf(tableModel.getValueAt(row, 1));
 
                         // Updates database 
-                        dbConnection.updateTask(taskNumber, taskStatus);
+                        dbConnection.updateTaskStatus(taskNumber, taskStatus);
                         // Updates taskList
                         for(Task task : taskList) {
                             if(task.getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
@@ -359,7 +359,7 @@ public class Controller {
     /**
      * Adds HTML tags to a string. The tags cause the string to render with a strikethrough 
      * @param taskName
-     * @return the given sring with strikethrough HTML tags added
+     * @return the given string with strikethrough HTML tags added
      */
     public String addInitialStrikethrough(String taskName) {
         taskName = "<html><strike>" + taskName + "</strike></html>";
@@ -377,7 +377,7 @@ public class Controller {
      */
     public void addOrRemoveStrikethrough(TableModel tableModel, int row, int taskNumber, String taskName, LocalDate taskDate, boolean taskStatus) {        
         // Updates database 
-        dbConnection.updateTask(String.valueOf(taskNumber), String.valueOf(taskStatus));
+        dbConnection.updateTaskStatus(String.valueOf(taskNumber), String.valueOf(taskStatus));
         // Updates taskList
         for(Task task : taskList) {
             if(task.getTaskNumber() == (int)tableModel.getValueAt(row, 0)) {
@@ -462,8 +462,10 @@ public class Controller {
                 JTable table =(JTable) mouseEvent.getSource();
                 Point point = mouseEvent.getPoint();
                 int row = table.rowAtPoint(point);
-                // Only executes if the user double clicked with their mouse
-                if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+                // Only executes if the user double clicked with their mouse on a valid table row (not a day of week header row)
+                boolean mouseDoubleClicked = mouseEvent.getClickCount() == 2;
+                boolean validTableRowSelected = table.getSelectedRow() != -1;
+                if (mouseDoubleClicked && validTableRowSelected) {
                     // Saves row and task number variables for use later (otherwise they are lost when the dialog box is displayed)
                     selectedRow = jTable.getSelectedRow();
                     selectedTaskNumber = (int)jTable.getValueAt(selectedRow, 0);        
@@ -637,9 +639,62 @@ public class Controller {
         // Sets taskID
         taskNumber = String.valueOf(selectedTaskNumber);   
         
-        // Validates input
-        if(!taskNameField.getText().equals("") && !taskNameField.getText().equals("Enter task name")) {
+        // Validates user input for taskName and taskDate 
+        validInput = validateNameAndDate(taskNameField, taskDateField);
+        if (validInput) {
             taskName = taskNameField.getText();
+            taskDate = convertNZDateToISO(taskDateField.getText());
+        }
+        
+        // Prevents default hint text from being saved to the task object's description field if user has not entered task details (this is not a required field) 
+        // There are no further constraints on the sring value for taskDetails 
+        if(!taskDetailsField.getText().equals("Add task details")) {
+            taskDescription = taskDetailsField.getText();
+        }
+        
+        // Gets task status
+        for(Task task : taskList) {
+            if(task.getTaskNumber() == selectedTaskNumber) {
+                taskStatus = String.valueOf(task.isTaskStatus());
+            }
+        }           
+        // If input is valid the selected record is updated in the database
+        if(validInput) {
+            Task task = parseStringsToTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
+            Boolean taskUpdatedInDB = dbConnection.updateTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
+            
+            // If the database update is successful the task is added to the taskList
+            if(taskUpdatedInDB) {
+                for(int i = 0; i < taskList.size(); i++) {
+                    if(taskList.get(i).getTaskNumber() == task.getTaskNumber()) {
+                        taskList.set(i, task);
+                        methodSuccessful = true;
+                    }
+                }
+                // Updates the table model
+                populateTableData(jTable);
+            }
+            else {
+                System.out.println("Error: Unable to update task in database. Check your connection");
+            }
+        }
+        else {
+            System.out.println("Error: Unable to update task due to invalid user input");
+        }
+        return methodSuccessful;
+    }
+    
+    /**
+     * Checks taskName and taskDate to ensure the user has entered a value for each field and date formatting is correct (dd-MM-yyyy)
+     * @param taskNameField
+     * @param taskDetailsField
+     * @param taskDateField
+     * @return true if user input for taskName and taskDate fields is valid, otherwise false
+     */
+    public boolean validateNameAndDate(JTextField taskNameField, JTextField taskDateField) {
+        boolean validInput = false;        
+        // Validates input in taskName field - Checks taskName field is not blank and does not contain the default hint text
+        if(!taskNameField.getText().equals("") && !taskNameField.getText().equals("Enter task name")) {
             validInput = true;
         }
         else {
@@ -648,22 +703,11 @@ public class Controller {
             taskNameField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
             validInput = false;
         }
-        // Prevents default hint text from being saved to the task object's description field if it is not changed by the user
-        if(!taskDetailsField.getText().equals("Add task details")) {
-            taskDescription = taskDetailsField.getText();
-        }
-        // Reverses the string to check it can be parsed into a valid ISO date format
+
+        // Validates input in taskDate field - Checks the date field is not blank and does not contain the default hint text
         if(!taskDateField.getText().equals("") && !taskDateField.getText().equals("dd-mm-yyyy")) {
-            try {
-                // Parses string into date with format dd-MM-yyyy 
-                String unverifiedDate = taskDateField.getText();
-                LocalDate dateNZFormat = LocalDate.parse(unverifiedDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                // Parses date into ISO format for storage in the database
-                LocalDate localDate = LocalDate.of(dateNZFormat.getYear(), dateNZFormat.getMonth(), dateNZFormat.getDayOfMonth());
-                localDate.format(DateTimeFormatter.ISO_DATE);
-                taskDate = String.valueOf(localDate);
-            }
-            catch(Exception e) {
+            String date = convertNZDateToISO(taskDateField.getText());
+            if(date.equals("")) {
                 // Displays error message to user if date formatting is invalid
                 taskDateField.setText("*Must be: dd-mm-yyyy");
                 taskDateField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
@@ -675,43 +719,30 @@ public class Controller {
             taskDateField.setText("*Date required");
             taskDateField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.RED));
             validInput = false;
-        } 
-        // Gets task status
-        for(Task task : taskList) {
-            if(task.getTaskNumber() == selectedTaskNumber) {
-                taskStatus = String.valueOf(task.isTaskStatus());
-            }
-        }           
-        // If input is valid the selected record is updated in the database 
-        if(validInput) {
-            Boolean taskUpdatedInDB = dbConnection.updateTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
-            // If the database update is successful the task is added to the taskList
-            if(taskUpdatedInDB) {
-                Task task = parseStringsToTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
-                // Updates task in taskList if StringToTask parse was successful (If it wasn't successful the taskNumber will be set as -1)
-                if(task.getTaskNumber() != -1) {
-                    for(int i = 0; i < taskList.size(); i++) {
-                        if(taskList.get(i).getTaskNumber() == task.getTaskNumber()) {
-                            taskList.set(i, task);
-                            methodSuccessful = true;
-                        }
-                    }
-                // Updates the table model
-                populateTableData(jTable);
-                }
-                else {
-                    System.out.println("Error: Unable to update task in controller's task list");
-                    dbConnection.deleteTask(String.valueOf(taskNumber));
-                }
-            }
-            else {
-                System.out.println("Error: Unable to update task in database. Check your connection");
-            }
         }
-        else {
-            System.out.println("Error: Unable to update task due to invalid user input");
+        return validInput;
+    }
+    
+    /**
+     * Reverses a given date (expressed as a String) from dd-MM-yyyy into a valid ISO date format
+     * @param unverifiedDate
+     * @return a string with format yyyy-MM-dd, or a null String if parse was unsuccessful
+     */
+    public String convertNZDateToISO(String unverifiedDate) {
+        
+        String convertedDate = "";
+        try {
+            // Parses string into date with format dd-MM-yyyy 
+            LocalDate dateNZFormat = LocalDate.parse(unverifiedDate, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            // Parses date into ISO format for storage in the database
+            LocalDate localDate = LocalDate.of(dateNZFormat.getYear(), dateNZFormat.getMonth(), dateNZFormat.getDayOfMonth());
+            localDate.format(DateTimeFormatter.ISO_DATE);
+            convertedDate = String.valueOf(localDate);
         }
-        return methodSuccessful;
+        catch(Exception e) {
+            System.out.println("Unable to parse date String due to invalid input (must be in format dd-MM-yyyy)");
+        }
+        return convertedDate;
     }
     
     /**
@@ -801,7 +832,7 @@ public class Controller {
      */
     public Task parseStringsToTask(String _taskNumber, String _taskName, String _taskDescription, String _taskDate, String _taskStatus) {   
         int taskNumber = -1;
-        String taskName = _taskName;
+        String taskName = "";
         String taskDescription = _taskDescription;
         LocalDate taskDate = LocalDate.now();
         boolean taskStatus = false;
@@ -814,7 +845,10 @@ public class Controller {
         catch(NumberFormatException e) {
             parametersValid = false;
             System.out.println("EXCEPTION:" + e);
-        }                   
+        }                  
+        if (_taskName.equals("")) {
+            _taskName = "TaskName";
+        }
         try {
             taskDate = LocalDate.parse(_taskDate);                               
         }
