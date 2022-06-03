@@ -7,6 +7,8 @@ package BIT707_A3_5001428_ToDoList;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.plaf.InternalFrameUI;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  * Displays tasks to the user organised by days of the week for the selected week (this week by default)
@@ -19,8 +21,8 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
     public CalendarViewForm() {
         initComponents();
         // Removes title bar from jInternalForm
-        javax.swing.plaf.InternalFrameUI internalFrameUI = this.getUI();
-        ((javax.swing.plaf.basic.BasicInternalFrameUI)internalFrameUI).setNorthPane(null);
+        InternalFrameUI internalFrameUI = this.getUI();
+        ((BasicInternalFrameUI)internalFrameUI).setNorthPane(null);
         
         // Removes the header row from jTable        
         jTable_calendarView.setTableHeader(null);
