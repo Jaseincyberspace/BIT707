@@ -86,7 +86,7 @@ public class DbConnection {
      * @param taskStatus
      * @return true if the task's status value was updated successfully in the database, otherwise false
      */
-    public boolean updateTask(String taskNumber, String taskStatus) {
+    public boolean updateTaskStatus(String taskNumber, String taskStatus) {
         String sql = "UPDATE Task SET status = \"" + taskStatus + "\" WHERE taskNumber = \"" + taskNumber + "\";";
         return insertUpdateOrDelete(sql); 
     }
