@@ -660,11 +660,10 @@ public class Controller {
         }           
         // If input is valid the selected record is updated in the database
         if(validInput) {
-            Task task = parseStringsToTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
             Boolean taskUpdatedInDB = dbConnection.updateTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
-            
             // If the database update is successful the task is added to the taskList
             if(taskUpdatedInDB) {
+                Task task = parseStringsToTask(taskNumber, taskName, taskDescription, taskDate, taskStatus);
                 for(int i = 0; i < taskList.size(); i++) {
                     if(taskList.get(i).getTaskNumber() == task.getTaskNumber()) {
                         taskList.set(i, task);
@@ -832,7 +831,7 @@ public class Controller {
      */
     public Task parseStringsToTask(String _taskNumber, String _taskName, String _taskDescription, String _taskDate, String _taskStatus) {   
         int taskNumber = -1;
-        String taskName = "";
+        String taskName = _taskName;
         String taskDescription = _taskDescription;
         LocalDate taskDate = LocalDate.now();
         boolean taskStatus = false;
@@ -848,6 +847,7 @@ public class Controller {
         }                  
         if (_taskName.equals("")) {
             _taskName = "TaskName";
+            parametersValid = false;
         }
         try {
             taskDate = LocalDate.parse(_taskDate);                               
