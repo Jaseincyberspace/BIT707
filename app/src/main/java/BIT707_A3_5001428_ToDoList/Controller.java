@@ -79,7 +79,10 @@ public class Controller {
         mainForm.setLocationRelativeTo(null);
         mainForm.pack();
         mainForm.setVisible(true);
- 
+    }
+    
+    public void displayErrorMessage(String message) {
+        listViewForm.displayErrorMessage(message);
     }
     
     /**
@@ -95,31 +98,34 @@ public class Controller {
             String taskDescription = String.valueOf(tableRow.get(2)); 
             LocalDate taskDate = LocalDate.now();
             boolean taskStatus = false;
-            String errorType = "";            
+            boolean validData = true;            
             // Checks to ensure data can be parsed 
             try {
                 taskNumber = Integer.parseInt((String)tableRow.get(0)); 
             }  
             catch(NumberFormatException e) {
-                errorType = "taskNumber";
-                System.out.println("EXCEPTION:" + e);
+                validData = false;
+                displayErrorMessage("Invalid task number retrieved from database. Please contact your system administrator for assistance");
+                System.out.println("Unable to parse task number " + "EXCEPTION: " + e);
             }
             try {
                 taskDate = LocalDate.parse((String)tableRow.get(3));                               
             }
             catch(java.time.format.DateTimeParseException e) {
-                errorType = "taskDate";
-                System.out.println("EXCEPTION:" + e);
+                validData = false;
+                displayErrorMessage("Invalid task date retrieved from database. Please contact your system administrator for assistance");
+                System.out.println("Unable to parse task date " + "EXCEPTION: " + e);
             } 
             try {
                 taskStatus = Boolean.parseBoolean((String)tableRow.get(4)); 
             }
             catch(Exception e) {
-                errorType = "taskStatus";
-                System.out.println("EXCEPTION:" + e);
+                validData = false;
+                displayErrorMessage("Invalid task status retrieved from database. Please contact your system administrator for assistance");
+                System.out.println("Unable to parse task status " + "EXCEPTION: " + e);
             }
             // Creates a new task with validated input data 
-            if (errorType.equals("")) {
+            if (validData) {
                 Task task = new Task(
                     taskNumber, 
                     taskName, 
@@ -129,22 +135,6 @@ public class Controller {
                 // Adds task to the Controller's taskList
                 taskList.add(task);
             }
-            else {
-                // Sends error messages to the console
-                switch (errorType) {
-                    case "taskNumber":
-                        System.out.println("Unable to parse task number");
-                        break;
-                    case "taskDate":
-                        System.out.println("Unable to parse task date");
-                        break;
-                    case "taskStatus":
-                        System.out.println("Unable to parse task status");
-                        break; 
-                    default: 
-                        break;
-                }      
-            }  
         }
     }
      
@@ -231,6 +221,8 @@ public class Controller {
                                 sundayList.add(task);
                                 break;
                             default:
+                                displayErrorMessage("Unable to determine which day of the week task number " + task.getTaskNumber()
+                                    + "falls on with date: " + String.valueOf(task.getTaskDate()));
                                 System.out.println("Unable to determine which day of the week task number " + task.getTaskNumber()
                                     + "falls on with date: " + String.valueOf(task.getTaskDate()));
                                 break;
@@ -333,7 +325,7 @@ public class Controller {
                                 task.setTaskDate((LocalDate)tableModel.getValueAt(row, 3));
                             }
                         }
-                        // Print statement is for testing and debugging only
+                        // This print statement is for testing and debugging only
                         System.out.println("strings changed at row: " + row);
                     }   
                 }   
@@ -435,7 +427,7 @@ public class Controller {
     }
     
     /**
-     * Takes a String value yyyy-MM-dd and formats it for New Zealand 
+     * Takes a String value in ISO format yyyy-MM-dd and formats it for New Zealand 
      * @param localDate
      * @return a string in format dd-MM-yyyy
      */
@@ -549,6 +541,7 @@ public class Controller {
             taskNumber = String.valueOf(nextTaskNumber);
         }
         catch(NumberFormatException e) {
+            displayErrorMessage("Unable to add task due to an invalid task number being generated by the system. Please contact your system administrator for further assistance");
             System.out.println("Exception: " + e);
         }
         
@@ -604,6 +597,7 @@ public class Controller {
                     methodSuccessful = true;
                 }
                 else {
+                    displayErrorMessage("Unable to add task to the task list. Please contact your system administrator for further assistance");
                     System.out.println("Error: Unable to add task to controller's task list");
                     dbConnection.deleteTask(String.valueOf(taskNumber));
                 }
@@ -843,7 +837,7 @@ public class Controller {
         }  
         catch(NumberFormatException e) {
             parametersValid = false;
-            System.out.println("EXCEPTION:" + e);
+            System.out.println("EXCEPTION: " + e);
         }                  
         if (_taskName.equals("")) {
             _taskName = "TaskName";
@@ -854,14 +848,14 @@ public class Controller {
         }
         catch(java.time.format.DateTimeParseException e) {
             parametersValid = false;
-            System.out.println("EXCEPTION:" + e);
+            System.out.println("EXCEPTION: " + e);
         } 
         try {
             taskStatus = Boolean.parseBoolean(_taskStatus); 
         }
         catch(Exception e) {
             parametersValid = false;
-            System.out.println("EXCEPTION:" + e);
+            System.out.println("EXCEPTION: " + e);
         }
         
         // Creates a new Task object with default values
