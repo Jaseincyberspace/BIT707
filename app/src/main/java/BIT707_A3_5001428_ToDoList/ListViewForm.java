@@ -4,6 +4,7 @@
  */
 package BIT707_A3_5001428_ToDoList;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
@@ -33,6 +34,17 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         // Handles double mouse clicks on table rows
         App.controller.addTableMouseClickListener(jTable_listView, jDialog_viewTask);
     }
+    
+    /**
+     * Displays a dialog on screen containing an error message.
+     * @param message 
+     */
+    public void displayErrorMessage(String message) {
+        jTextArea_errorDialogMessage.setText("message");
+        // Displays dialog position in the centre of the parent form
+        jDialog_errorDialog.setLocationRelativeTo(this.jScrollPane_listView);
+        jDialog_errorDialog.setVisible(true);
+    } 
         
     /**
      * Displays a dialog on screen showing a detailed view of the selected task
@@ -97,6 +109,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jLabel_editTaskDateIcon = new javax.swing.JLabel();
         jPanel_editTaskErrorMessage = new javax.swing.JPanel();
         jLabel_editTaskErrorMessage = new javax.swing.JLabel();
+        jDialog_errorDialog = new javax.swing.JDialog();
+        jPanel_errorMessagePanel = new javax.swing.JPanel();
+        jTextArea_errorDialogMessage = new javax.swing.JTextArea();
+        jButton_errorDialogContinue = new javax.swing.JButton();
         jScrollPane_listView = new javax.swing.JScrollPane();
         jTable_listView = new javax.swing.JTable();
         jPanel_addTask = new javax.swing.JPanel();
@@ -623,6 +639,90 @@ public class ListViewForm extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
+        jDialog_errorDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jDialog_errorDialog.setTitle("Error");
+        jDialog_errorDialog.setAlwaysOnTop(true);
+        jDialog_errorDialog.setBackground(new java.awt.Color(79, 79, 79));
+        jDialog_errorDialog.setFocusTraversalPolicyProvider(true);
+        jDialog_errorDialog.setIconImage(null);
+        jDialog_errorDialog.setIconImages(null);
+        jDialog_errorDialog.setLocation(new java.awt.Point(0, 0));
+        jDialog_errorDialog.setMaximumSize(new java.awt.Dimension(480, 435));
+        jDialog_errorDialog.setMinimumSize(new java.awt.Dimension(350, 220));
+        jDialog_errorDialog.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        jDialog_errorDialog.setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
+        jDialog_errorDialog.setName("jDialog_errorDialog"); // NOI18N
+        jDialog_errorDialog.setPreferredSize(new java.awt.Dimension(350, 220));
+        jDialog_errorDialog.setResizable(false);
+        jDialog_errorDialog.setSize(new java.awt.Dimension(150, 150));
+
+        jPanel_errorMessagePanel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel_errorMessagePanel.setForeground(new java.awt.Color(0, 0, 0));
+        jPanel_errorMessagePanel.setName("jPanel_errorMessagePanel"); // NOI18N
+        jPanel_errorMessagePanel.setPreferredSize(new java.awt.Dimension(150, 169));
+
+        jTextArea_errorDialogMessage.setEditable(false);
+        jTextArea_errorDialogMessage.setBackground(new java.awt.Color(255, 255, 255));
+        jTextArea_errorDialogMessage.setColumns(20);
+        jTextArea_errorDialogMessage.setForeground(new java.awt.Color(0, 0, 0));
+        jTextArea_errorDialogMessage.setLineWrap(true);
+        jTextArea_errorDialogMessage.setRows(5);
+        jTextArea_errorDialogMessage.setText("Sorry, something's gone wrong. Please contact your system administrator if you require further assistance. ");
+        jTextArea_errorDialogMessage.setWrapStyleWord(true);
+        jTextArea_errorDialogMessage.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        jTextArea_errorDialogMessage.setFocusable(false);
+        jTextArea_errorDialogMessage.setName("jTextArea_errorDialogMessage"); // NOI18N
+        jTextArea_errorDialogMessage.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout jPanel_errorMessagePanelLayout = new javax.swing.GroupLayout(jPanel_errorMessagePanel);
+        jPanel_errorMessagePanel.setLayout(jPanel_errorMessagePanelLayout);
+        jPanel_errorMessagePanelLayout.setHorizontalGroup(
+            jPanel_errorMessagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_errorMessagePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTextArea_errorDialogMessage)
+                .addGap(18, 18, 18))
+        );
+        jPanel_errorMessagePanelLayout.setVerticalGroup(
+            jPanel_errorMessagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_errorMessagePanelLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jTextArea_errorDialogMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        jButton_errorDialogContinue.setBackground(new java.awt.Color(75, 114, 153));
+        jButton_errorDialogContinue.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton_errorDialogContinue.setForeground(new java.awt.Color(255, 255, 255));
+        jButton_errorDialogContinue.setText("Continue");
+        jButton_errorDialogContinue.setName("jButton_errorDialogContinue"); // NOI18N
+        jButton_errorDialogContinue.setNextFocusableComponent(jTextField_editTaskName);
+        jButton_errorDialogContinue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_errorDialogContinueActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog_errorDialogLayout = new javax.swing.GroupLayout(jDialog_errorDialog.getContentPane());
+        jDialog_errorDialog.getContentPane().setLayout(jDialog_errorDialogLayout);
+        jDialog_errorDialogLayout.setHorizontalGroup(
+            jDialog_errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel_errorMessagePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
+            .addGroup(jDialog_errorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton_errorDialogContinue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jDialog_errorDialogLayout.setVerticalGroup(
+            jDialog_errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog_errorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel_errorMessagePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton_errorDialogContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 56, Short.MAX_VALUE))
+        );
+
         setBorder(null);
         setResizable(true);
         setMinimumSize(new java.awt.Dimension(44, 100));
@@ -630,9 +730,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         setOpaque(true);
 
         jScrollPane_listView.setAutoscrolls(true);
-        jScrollPane_listView.setMinimumSize(new java.awt.Dimension(16, 16));
         jScrollPane_listView.setName("ListView"); // NOI18N
-        jScrollPane_listView.setPreferredSize(new java.awt.Dimension(2, 2));
 
         jTable_listView.setAutoCreateRowSorter(true);
         jTable_listView.setBackground(new java.awt.Color(255, 255, 255));
@@ -866,7 +964,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jTextField_editTaskName.setText(taskName);
         jTextArea_editTaskDetails.setText(taskComponents[2]);
         jTextField_editTaskDate.setText(taskComponents[3]);
-        // Sets dialog position in centre of screen 
+        // Sets dialog position in centre of the listView 
         jDialog_editTask.setLocationRelativeTo(this.jScrollPane_listView);
         // Displays the editTask dialog
         jDialog_editTask.setVisible(true);
@@ -1008,6 +1106,10 @@ public class ListViewForm extends javax.swing.JInternalFrame {
         jDialog_addTask.setVisible(true);
     }//GEN-LAST:event_jButton_addTaskActionPerformed
 
+    private void jButton_errorDialogContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_errorDialogContinueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton_errorDialogContinueActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_addTask;
     private javax.swing.JButton jButton_addTaskCancel;
@@ -1016,9 +1118,11 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton_editTask;
     private javax.swing.JButton jButton_editTaskCancel;
     private javax.swing.JButton jButton_editTaskSave;
+    private javax.swing.JButton jButton_errorDialogContinue;
     private javax.swing.JButton jButton_viewTaskMarkCompleted;
     private javax.swing.JDialog jDialog_addTask;
     private javax.swing.JDialog jDialog_editTask;
+    private javax.swing.JDialog jDialog_errorDialog;
     private javax.swing.JDialog jDialog_viewTask;
     private javax.swing.JLabel jLabel_addTaskDateIcon;
     private javax.swing.JLabel jLabel_addTaskDetailsIcon;
@@ -1033,6 +1137,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel_addTaskPanel;
     private javax.swing.JPanel jPanel_editTaskErrorMessage;
     private javax.swing.JPanel jPanel_editTaskPanel;
+    private javax.swing.JPanel jPanel_errorMessagePanel;
     private javax.swing.JPanel jPanel_viewTaskPanel;
     private javax.swing.JScrollPane jScrollPane_addTask;
     private javax.swing.JScrollPane jScrollPane_editTask;
@@ -1041,6 +1146,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTable_listView;
     private javax.swing.JTextArea jTextArea_addTaskDetails;
     private javax.swing.JTextArea jTextArea_editTaskDetails;
+    private javax.swing.JTextArea jTextArea_errorDialogMessage;
     private javax.swing.JTextArea jTextArea_viewTaskDetails;
     private javax.swing.JTextField jTextField_addTaskDate;
     private javax.swing.JTextField jTextField_addTaskName;
