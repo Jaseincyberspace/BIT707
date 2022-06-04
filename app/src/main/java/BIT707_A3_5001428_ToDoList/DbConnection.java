@@ -20,6 +20,7 @@ public class DbConnection {
             DbConnection.DB = DriverManager.getConnection("jdbc:sqlite:toDo.db");
         }
         catch(SQLException e) {
+            App.controller.displayErrorMessage("Unable to connect to database");
             System.out.println("Exception: " + e);
         }
     }
@@ -43,6 +44,7 @@ public class DbConnection {
             }
         }
         catch(SQLException e) {
+            App.controller.displayErrorMessage("Unable to get largest task number from database. Please check your connection");
             System.out.println("Exception: " + e);
         }
         return maxID;
@@ -58,9 +60,16 @@ public class DbConnection {
      * @return true if the task was added to the database successfully, otherwise false
      */
     public boolean createTask(String taskNumber, String taskName, String taskDescription, String taskDate) {
-        String sql = "INSERT INTO Task(taskNumber, taskName, taskDescription, dueDate, status) VALUES (" 
+        try{
+            String sql = "INSERT INTO Task(taskNumber, taskName, taskDescription, dueDate, status) VALUES (" 
                 + "\"" + taskNumber + "\",\"" + taskName + "\",\"" + taskDescription + "\",\"" + taskDate + "\",\"" + "false\");";
-        return insertUpdateOrDelete(sql); 
+            return insertUpdateOrDelete(sql); 
+        }
+        catch(Exception e) {
+            App.controller.displayErrorMessage("Unable to insert task into database. Please check your connection");
+            System.out.println("Exception: " + e);
+            return false;
+        }
     }
     
     /**
@@ -74,9 +83,16 @@ public class DbConnection {
      * @return true if the task was updated successfully in the database, otherwise false
      */
     public boolean updateTask(String taskNumber, String taskName, String taskDescription, String taskDate, String taskStatus) {
-        String sql = "UPDATE Task SET taskName = " + "\"" + taskName + "\", taskDescription = " + "\"" + taskDescription + "\", dueDate = "
+        try {
+            String sql = "UPDATE Task SET taskName = " + "\"" + taskName + "\", taskDescription = " + "\"" + taskDescription + "\", dueDate = "
             + "\"" + taskDate + "\", status = " + "\"" + taskStatus +  "\"" + " WHERE taskNumber = " + "\"" + taskNumber + "\";";
-        return insertUpdateOrDelete(sql); 
+            return insertUpdateOrDelete(sql); 
+        }
+        catch(Exception e) {
+            App.controller.displayErrorMessage("Unable to update task in database. Please check your connection");
+            System.out.println("Exception: " + e);
+            return false;
+        }
     }
     
     /**
@@ -87,8 +103,15 @@ public class DbConnection {
      * @return true if the task's status value was updated successfully in the database, otherwise false
      */
     public boolean updateTaskStatus(String taskNumber, String taskStatus) {
-        String sql = "UPDATE Task SET status = \"" + taskStatus + "\" WHERE taskNumber = \"" + taskNumber + "\";";
-        return insertUpdateOrDelete(sql); 
+        try {
+            String sql = "UPDATE Task SET status = \"" + taskStatus + "\" WHERE taskNumber = \"" + taskNumber + "\";";
+            return insertUpdateOrDelete(sql); 
+        }
+        catch(Exception e) {
+            App.controller.displayErrorMessage("Unable to update task status in database. Please check your connection");
+            System.out.println("Exception: " + e);
+            return false;
+        }
     }
     
     /**
@@ -122,6 +145,7 @@ public class DbConnection {
         }
         // Handle invalid SQL queries
         catch(SQLException e) {
+            App.controller.displayErrorMessage("Unable to find task number " + taskNumber + " in database");
             System.out.println("Exception: " + e);
         }
         return tableRow;
@@ -161,6 +185,7 @@ public class DbConnection {
         }
         // Handle invalid SQL queries
         catch(SQLException e) {
+            App.controller.displayErrorMessage("Unable to retrieve tasks from database. Please check your connection");
             System.out.println("Exception: " + e);
         } 
         return listOfTasks;
@@ -173,8 +198,16 @@ public class DbConnection {
      * @return 
      */
     public boolean deleteTask(String taskNumber) {
-        String sql = "DELETE FROM Task WHERE taskNumber = " + "\"" + taskNumber + "\";";
+        try {
+            String sql = "DELETE FROM Task WHERE taskNumber = " + "\"" + taskNumber + "\";";
         return insertUpdateOrDelete(sql);  
+        }
+        catch(Exception e) {
+            App.controller.displayErrorMessage("Unable to delete task number " + taskNumber + "from database");
+            System.out.println("Exception: " + e);
+            return false;
+        }
+        
     }
     
     /**
