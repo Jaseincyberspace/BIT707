@@ -40,7 +40,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
      * @param message 
      */
     public void displayErrorMessage(String message) {
-        jTextArea_errorDialogMessage.setText("message");
+        jTextArea_errorDialogMessage.setText(message);
         // Displays dialog position in the centre of the parent form
         jDialog_errorDialog.setLocationRelativeTo(this.jScrollPane_listView);
         jDialog_errorDialog.setVisible(true);
@@ -1107,7 +1107,7 @@ public class ListViewForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton_addTaskActionPerformed
 
     private void jButton_errorDialogContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_errorDialogContinueActionPerformed
-        // TODO add your handling code here:
+        jDialog_errorDialog.setVisible(false);
     }//GEN-LAST:event_jButton_errorDialogContinueActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
