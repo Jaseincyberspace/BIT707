@@ -11,17 +11,29 @@ import java.util.ArrayList;
  * This class connects the ToDo List application to an SQLite database
  */
 public class DbConnection {
+    public static Connection DB;
+        
     /**
      * Initializes a connection to the SQLite database
      */
-    public static Connection DB;
+    
     public void initDatabase() {
+        String sql = "CREATE TABLE IF NOT EXISTS Task (" +
+            "taskNumber INTEGER PRIMARY KEY, " +
+            "taskName TEXT NOT NULL, " +
+            "taskDescription TEXT, " +
+            "dueDate TEXT CHECK(dueDate is null or length(dueDate) == 10), " +
+            "status TEXT NOT NULL CHECK(status == \"true\" or status == \"false\")" +");";
+        Statement statement = null;
+        
         try {
-            DbConnection.DB = DriverManager.getConnection("jdbc:sqlite:toDo.db");
+            DB = DriverManager.getConnection("jdbc:sqlite:toDo.db");
+            statement = DB.createStatement();
+            statement.executeUpdate(sql);
         }
         catch(SQLException e) {
-            App.controller.displayErrorMessage("Unable to connect to database");
-            System.out.println("Exception: " + e);
+            // Print error message to console
+            System.out.println("Unable to connect to database. Exception: " + e);
         }
     }
     
@@ -156,7 +168,6 @@ public class DbConnection {
      * @return an ArrayList of ArrayLists. Each list contains one table row
      */
     public ArrayList readAllTasks() {
-        
         String sql = "SELECT * FROM Task";
         Statement statement = null;
         ResultSet resultSet = null;
@@ -184,9 +195,9 @@ public class DbConnection {
             } 
         }
         // Handle invalid SQL queries
-        catch(SQLException e) {
-            App.controller.displayErrorMessage("Unable to retrieve tasks from database. Please check your connection");
-            System.out.println("Exception: " + e);
+        catch(SQLException e) {            
+            // Print error message to console
+            System.out.println("Unable to retrieve tasks from database. Exception: " + e);
         } 
         return listOfTasks;
     }
