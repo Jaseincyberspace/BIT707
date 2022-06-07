@@ -35,7 +35,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel_titleBar" min="-2" pref="80" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jDesktopPane_formContainer" pref="520" max="32767" attributes="0"/>
+              <Component id="jDesktopPane_formContainer" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -54,7 +54,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <Component id="jLabel_appTitle" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="225" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButton_listView" min="-2" pref="38" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButton_calendarView" min="-2" pref="38" max="-2" attributes="0"/>
