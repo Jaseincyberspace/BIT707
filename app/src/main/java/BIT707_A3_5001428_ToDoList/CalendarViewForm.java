@@ -693,11 +693,6 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         jButton_errorDialogContinue.setForeground(new java.awt.Color(255, 255, 255));
         jButton_errorDialogContinue.setText("Continue");
         jButton_errorDialogContinue.setName("jButton_errorDialogContinue"); // NOI18N
-        jButton_errorDialogContinue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_errorDialogContinueActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jDialog_errorDialogLayout = new javax.swing.GroupLayout(jDialog_errorDialog.getContentPane());
         jDialog_errorDialog.getContentPane().setLayout(jDialog_errorDialogLayout);
@@ -1218,10 +1213,6 @@ public class CalendarViewForm extends javax.swing.JInternalFrame {
         DefaultTableModel tableModel = (DefaultTableModel)jTable_calendarView.getModel();
         tableModel.fireTableDataChanged();
     }//GEN-LAST:event_jButton_resetSelectedWeekActionPerformed
-
-    private void jButton_errorDialogContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_errorDialogContinueActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton_errorDialogContinueActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

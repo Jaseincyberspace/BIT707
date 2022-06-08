@@ -8,6 +8,10 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 
+/**
+ *
+ * @author OEM
+ */
 public class MainForm extends javax.swing.JFrame {
     /**
      * Creates a new MainForm which is used as a MDI container
@@ -37,6 +41,7 @@ public class MainForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImages(null);
+        setMinimumSize(new java.awt.Dimension(700, 500));
 
         jPanel_titleBar.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -98,7 +103,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jDesktopPane_formContainer.setMinimumSize(new java.awt.Dimension(200, 500));
+        jDesktopPane_formContainer.setMinimumSize(new java.awt.Dimension(600, 500));
         jDesktopPane_formContainer.setName(""); // NOI18N
         jDesktopPane_formContainer.setLayout(new java.awt.BorderLayout());
 

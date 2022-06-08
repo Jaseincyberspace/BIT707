@@ -11,6 +11,10 @@ import java.util.ArrayList;
  * This class connects the ToDo List application to an SQLite database
  */
 public class DbConnection {
+
+    /**
+     *
+     */
     public static Connection DB;
         
     /**

@@ -15,6 +15,10 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * Displays a table containing tasks with their status, task name, and due date
  */
 public class ListViewForm extends javax.swing.JInternalFrame {
+
+    /**
+     *
+     */
     public DefaultTableModel tableModel;
     /**
      * Creates new ListViewForm and populates it with data

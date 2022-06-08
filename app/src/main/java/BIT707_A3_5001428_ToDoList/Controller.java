@@ -46,10 +46,25 @@ public class Controller {
     private int selectedTaskNumber;
     private LocalDate[] selectedWeek;
     // Views
+
+    /**
+     *
+     */
     public static MainForm mainForm = null;
+
+    /**
+     *
+     */
     public static ListViewForm listViewForm = null;
+
+    /**
+     *
+     */
     public static CalendarViewForm calendarViewForm = null;
     
+    /**
+     *
+     */
     public Controller() {
         // Establishes database connection
         this.dbConnection = new DbConnection();
@@ -57,14 +72,6 @@ public class Controller {
         if(taskList == null) {
              this.taskList = new ArrayList<>();
         }
-    }
-    
-    /**
-    * Gets the taskList 
-    * @return a list of all tasks retrieved from the database
-    */
-    public ArrayList<Task> getTaskList() {
-        return taskList;
     }
         
     /**
@@ -81,8 +88,20 @@ public class Controller {
         mainForm.setVisible(true);
     }
     
+    /**
+     *
+     * @param message
+     */
     public void displayErrorMessage(String message) {
-        listViewForm.displayErrorMessage(message);
+        if(listViewForm != null) {
+            listViewForm.displayErrorMessage(message);
+        }
+        else {
+            // Displays error message dialog on top of a listView form
+            listViewForm = new ListViewForm();
+            listViewForm.displayErrorMessage(message);
+        }
+        
     }
     
     /**
@@ -428,7 +447,7 @@ public class Controller {
     
     /**
      * Takes a String value in ISO format yyyy-MM-dd and formats it for New Zealand 
-     * @param localDate
+     * @param date
      * @return a string in format dd-MM-yyyy
      */
      public String formatDate(String date) {
@@ -445,7 +464,7 @@ public class Controller {
     /**
      * Fires when user double clicks on a table row - Displays a dialog showing the detailed view of a task  
      * @param jTable 
-     * @param jDialog
+     * @param dialog
      */
     public void addTableMouseClickListener(JTable jTable, JDialog dialog) {
         jTable.addMouseListener(new MouseAdapter() {
@@ -689,7 +708,6 @@ public class Controller {
     /**
      * Checks taskName and taskDate to ensure the user has entered a value for each field and date formatting is correct (dd-MM-yyyy)
      * @param taskNameField
-     * @param taskDetailsField
      * @param taskDateField
      * @return true if user input for taskName and taskDate fields is valid, otherwise false
      */
@@ -731,7 +749,6 @@ public class Controller {
      * @return a string with format yyyy-MM-dd, or a null String if parse was unsuccessful
      */
     public String convertNZDateToISO(String unverifiedDate) {
-        
         String convertedDate = "";
         try {
             // Parses string into date with format dd-MM-yyyy 
@@ -797,8 +814,8 @@ public class Controller {
     }
     
     /**
-     * Initially calculates the start and end dates of the current week (Monday - Sunday). 
-     * If called again after being initialized it applies an offset of plus or minus one week from the last selected week based on user input
+     * Initially calculates the start and end dates of the current week (Monday - Sunday).If called again after being initialized it applies an offset of plus or minus one week from the last selected week based on user input
+     * @param plusOrMinus1Week
      */    
     public void setSelectedWeek(int plusOrMinus1Week) {        
         if(selectedWeek == null || plusOrMinus1Week == 0) {

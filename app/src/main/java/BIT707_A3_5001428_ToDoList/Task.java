@@ -7,6 +7,10 @@ package BIT707_A3_5001428_ToDoList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ *
+ * @author OEM
+ */
 public class Task {
     private int taskNumber;
     private String taskName;
